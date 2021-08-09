@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="android.content.DialogInterface" />
+
+        <variable
+            name="data"
+            type="com.excean.mirror.version.ProgressDialog" />
+
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="270dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_corner6_solid_white"
+        android:maxHeight="320dp"
+        android:orientation="vertical"
+        android:paddingStart="20dp"
+        android:paddingTop="18dp"
+        android:paddingEnd="20dp"
+        android:paddingBottom="24dp"
+
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="版本更新"
+            android:textColor="#333333"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="8dp"
+            android:scrollbars="vertical"
+            android:text="@{@string/dialog_download_package(data.size)}"
+            android:textColor="#999999"
+            android:textSize="12sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:lineSpacingMultiplier="1.2"
+            android:maxLines="12"
+            android:scrollbars="vertical"
+            android:text="@{@string/dialog_download_hint(data.versionName)}"
+            android:textColor="#333333"
+            android:textSize="14sp" />
+
+        <androidx.core.widget.ContentLoadingProgressBar
+            android:layout_marginTop="10dp"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:progress="@{data.progress}" />
+
+    </LinearLayout>
+</layout>

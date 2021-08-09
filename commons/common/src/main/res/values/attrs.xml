@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ZeroBubbleScroller">
+        <attr name="bubbleScroller_textSize" format="reference" />
+        <attr name="bubbleScroller_textColor" format="reference" />
+        <attr name="bubbleScroller_highlightColor" format="reference" />
+        <attr name="bubbleScroller_highlightSize" format="reference" />
+    </declare-styleable>
+
+
+    <declare-styleable name="ZeroIndexBar">
+        <attr name="indexBarTextSize" format="dimension" />
+        <attr name="indexBarPressBackground" format="color" />
+        <attr name="indexBarNormalTextColor" format="color" />
+        <attr name="indexBarSelectedTextColor" format="color|reference" />
+    </declare-styleable>
+
+    <declare-styleable name="ZeroResourceLayout">
+        <attr name="errorView" format="reference" />
+        <attr name="emptyView" format="reference" />
+        <attr name="contentView" format="reference" />
+        <attr name="loadingView" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="ZeroAspectRatioLayout">
+        <attr name="aspectRatio" format="float" />
+        <attr name="layout_widthRatio" format="float" />
+        <attr name="layout_heightRatio" format="float" />
+        <attr name="maxHeight" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="ZeroSlideBar">
+        <attr name="android:textSize" />
+        <attr name="android:textColor" />
+        <attr name="slideBarFocusTextColor" format="color" />
+        <attr name="slideBarFocusBackgroundColor" format="color" />
+    </declare-styleable>
+</resources>

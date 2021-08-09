@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="android.content.DialogInterface" />
+
+        <variable
+            name="data"
+            type="com.excean.middleware.ui.base.SimpleDialogModel" />
+
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="270dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_corner6_solid_white"
+        android:maxHeight="320dp"
+        android:orientation="vertical"
+        android:paddingBottom="13dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="18.33dp"
+            android:text="@{data.title}"
+            android:textColor="#333333"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="23.33dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginRight="23.33dp"
+            android:lineSpacingMultiplier="1.2"
+            android:text="@{data.content}"
+            android:maxLines="12"
+            android:scrollbars="vertical"
+            android:textColor="#333333"
+            android:textSize="14sp" />
+        <TextView
+            android:id="@+id/rb_not_tip_again"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="32dp"
+            android:layout_marginTop="24dp"
+            android:drawableLeft="@drawable/selector_policy_radio"
+            android:drawablePadding="4dp"
+            android:text="@{data.notify}"
+            android:textColor="#999999"
+            android:textSize="12sp"
+            android:visibility="@{data.enableNotify?View.VISIBLE:View.GONE}" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/negative"
+                android:minWidth="100dp"
+                android:minHeight="30dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:background="@drawable/bg_selector_corner4_solid_gray"
+                android:text="@{data.negative}"
+                android:textAllCaps="false"
+                android:onClick="@{(v)->data.dispatchClickEvent(v,DialogInterface.BUTTON_NEGATIVE)}"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="14sp" />
+
+            <Button
+                android:id="@+id/positive"
+                android:minWidth="100dp"
+                android:minHeight="30dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:background="@drawable/bg_selector_corner4_solid_main_gray"
+                android:text="@{data.positive}"
+                android:onClick="@{(v)->data.dispatchClickEvent(v,DialogInterface.BUTTON_POSITIVE)}"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:textSize="14sp" />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+</layout>

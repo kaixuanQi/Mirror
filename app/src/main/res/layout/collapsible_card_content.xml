@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:parentTag="android.widget.FrameLayout">
+
+    <LinearLayout
+        android:id="@+id/collapsible_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/title_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?selectableItemBackground"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="@dimen/margin_normal"
+            android:paddingEnd="@dimen/margin_normal">
+
+            <TextView
+                android:id="@+id/card_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingTop="@dimen/spacing_micro"
+                android:paddingBottom="@dimen/spacing_micro"
+                android:textAlignment="viewStart"
+                android:textColor="#333333"
+                android:textSize="15sp" />
+
+            <ImageView
+                android:id="@+id/expand_icon"
+                android:layout_width="11dp"
+                android:layout_height="7dp"
+                android:layout_marginStart="@dimen/margin_normal"
+                android:background="@drawable/ic_action_arrow"
+                android:importantForAccessibility="no" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/card_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/margin_normal"
+            android:paddingEnd="@dimen/margin_normal"
+            android:textAlignment="viewStart"
+            android:textColor="#666666"
+            android:textSize="14sp"
+            tools:visibility="visible" />
+
+    </LinearLayout>
+
+</merge>

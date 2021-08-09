@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="com.excean.mirror.apps.AppPackageViewModel" />
+    </data>
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ProgressBar
+            android:id="@+id/loadingView"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="@{viewModel.prepared?View.GONE:View.VISIBLE}" />
+
+
+        <androidx.recyclerview.widget.RecyclerView
+
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="@{viewModel.prepared?View.VISIBLE:View.GONE}" />
+
+        <com.zero.support.common.widget.SlideBar
+            android:id="@+id/slideBar"
+            android:layout_width="24dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="48dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="16dp"
+            android:textColor="#999999"
+            android:textSize="12sp"
+            android:visibility="@{viewModel.prepared?View.VISIBLE:View.GONE}"
+            app:slideBarFocusBackgroundColor="?colorAccent"
+            app:slideBarFocusTextColor="@color/white" />
+    </FrameLayout>
+</layout>

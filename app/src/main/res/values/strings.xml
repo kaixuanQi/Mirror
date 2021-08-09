@@ -1,0 +1,84 @@
+<resources>
+    <string name="dialog_privacy_title">个人信息保护提示</string>
+    <string name="dialog_privacy_content">希望您仔细阅读《隐私政策》（以下简称“本政策”），详细了解我们对信息的收集、使用方式，以便您更好地了解我们的服务并作出适当的选择。 若您使用我们的服务，即表示您认同我们在本政策中所述内容。若您有问题，请联系我们。</string>
+    <string name="dialog_privacy_negative">不同意并退出</string>
+    <string name="dialog_privacy_positive">同意</string>
+    <string name="dialog_error_disable_cell_data">当前您正在使用非WiFi网络环境，是否允许使用流量下载？</string>
+    <string name="dialog_error_storage">您的手机存储空间不足，请尝试清理手机存储空间后再下载。</string>
+    <string name="dialog_error_disable_cell_data_positive">流量下载</string>
+    <string name="dialog_error_storage_negative">管理存储</string>
+    <string name="dialog_error_storage_positive">重试</string>
+    <string name="dialog_install_content">新版本已下载完成，是否立即安装？</string>
+    <string name="dialog_install_negative">暂不</string>
+    <string name="dialog_install_positive">立即安装</string>
+    <string name="app_name">应用分身版</string>
+    <string name="question_type">分类标签</string>
+    <string name="question_description">我要反馈</string>
+    <string name="feedback_contact_way">联系方式</string>
+    <string name="title_about_us">关于我们</string>
+    <string name="title_question">常见问题</string>
+    <string name="title_feedback">意见反馈</string>
+    <string name="title_check_update">检查更新</string>
+    <string name="title_privacy">隐私政策</string>
+    <string name="title_protocol">服务协议</string>
+    <string name="about_version_name">版本: v%1$s</string>
+    <string name="title_manager_center">管理中心</string>
+    <string name="title_app_packages">选择应用</string>
+    <string name="title_mirror_manager">分身管理</string>
+    <string name="title_app_producer">制作分身</string>
+    <string name="question_title_1">
+所有的应用都可以分身吗？
+    </string>
+    <string name="question_content_1">
+大多数主流应用或者游戏都支持分身，如果出现无法分身的情况，请通过用户反馈页面向我们提出宝贵意见。
+    </string>
+    <string name="question_title_2">
+为什么需要申请手机权限？
+    </string>
+    <string name="question_content_2">
+分身应用是在独立环境中运行的，申请的权限（例如位置、相机、麦克风等）都是为了支持分身应用中的部分功能的正常使用，我们本身并不需要用户提供这些权限并承诺尊重用户隐私，请放心使用。
+    </string>
+
+
+    <string name="question_title_3">
+ 新消息怎么不在通知栏显示？
+    </string>
+    <string name="question_content_3">
+部分机型是默认关闭接收通知的，可以进入手机设置中打开通知消息。   </string>
+
+    <string name="question_title_4">
+    使用分身会被封号吗？
+    </string>
+    <string name="question_content_4">
+    只要不在分身里注册新账号，合理合法使用分身，基本不会遇到被封号的情况。
+    </string>
+
+
+    <string name="feedback_contact_way_hint">请在这里输入手机号或QQ</string>
+    <string name="feedback_question_desc_hint">请在这里输入内容</string>
+    <string name="feedback_submit">提交</string>
+    <string name="feedback_submit_dialog_content">你的意见十分宝贵， 感谢您对我们产品的支持。</string>
+    <string name="feedback_submit_dialog_title">提交成功</string>
+    <string name="dialog_version_title">发现新版本</string>
+    <string name="title_app_name">应用名称</string>
+
+
+    <string name="mirror_uninstall_warning">确定要卸载应用吗？这将会清除全部数据和历史记录。</string>
+    <string name="mirror_uninstall_negative">卸载</string>
+    <string name="mirror_uninstall_positive">我再想想</string>
+    <string name="mirror_producer_running">正在制作分身中</string>
+    <string name="mirror_producer_finish">制作完成</string>
+    <string name="mirror_producer_notice">注意事项:部分手机需要授权“允许安装应用”的权限，若不授权将导致制作失败</string>
+
+    <string name="dialog_download_package">安装包: %1$s</string>
+    <string name="dialog_download_hint">应用分身版%1$s 正在下载中，请勿退出</string>
+
+    <string-array name="feedback_question_type">
+        <item>闪退或卡顿</item>
+        <item>功能异常</item>
+        <item>应用不支持</item>
+        <item>新用户问题</item>
+        <item>产品建议</item>
+        <item>其他</item>
+    </string-array>
+</resources>

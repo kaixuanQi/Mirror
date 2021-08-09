@@ -1,0 +1,46 @@
+ext { localRepositoryModuelsPath = "" }
+switchEnvironment()
+
+public void switchEnvironment() {
+    def sdkDir = System.getenv("ANDROID_HOME")
+    def ndkDir = System.getenv("NDK_ROOT")
+    localRepositoryModuelsPath = System.getenv("LOCALREPOSITORYMODUELSPATH")
+
+    def local = new Properties()
+    def localFile = file("local.properties")
+    def stream = new FileInputStream(localFile)
+    local.load(stream)
+    stream.close()
+    println("localRepositoryModuelsPath" + localRepositoryModuelsPath)
+    if (sdkDir.equals(local.getProperty("sdk.dir")) && ndkDir.equals(local.getProperty("ndk.dir")) && localRepositoryModuelsPath.equals(local.getProperty("localRepositoryModuelsPath"))) {
+        println("environment sure")
+        return
+    }
+    println(sdkDir)
+    println(ndkDir)
+
+    if (ndkDir == null || "".equals(ndkDir)) {
+        local.remove("ndk.dir")
+        println("for get right  ndk.dir ,Please set environment variant : NDK_ROOT")
+    } else {
+        local.put("ndk.dir", ndkDir)
+    }
+    if (localRepositoryModuelsPath == null || "".equals(localRepositoryModuelsPath)) {
+        local.remove("localRepositoryModuelsPath")
+        println("for get right  local Repository Moduels Path ,Please set environment variant : LOCALREPOSITORYMODUELSPATH")
+    } else {
+        local.put("localRepositoryModuelsPath", localRepositoryModuelsPath)
+    }
+    if (sdkDir == null || "".equals(sdkDir)) {
+        println("for get right  sdk.dir ,Please set environment variant : ANDROID_HOME ")
+    } else {
+        local.put("sdk.dir", sdkDir)
+    }
+    local.store(localFile.newWriter(), 'This file must *NOT* be checked into Version Control Systems,\n' +
+            ' as it contains information specific to your local configuration.\n' +
+            '\n' +
+            ' Location of the SDK. This is only used by Gradle.\n' +
+            ' For customization when using a Version Control System, please read the\n' +
+            ' header note.\n' +
+            'Tue Sep 04 16:58:14 CST 2018')
+}

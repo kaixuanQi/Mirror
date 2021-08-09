@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="rationale_ask">This app may not work correctly without the requested permissions.</string>
+    <string name="rationale_ask_again">
+        This app may not work correctly without the requested permissions.
+        Open the app settings screen to modify app permissions.
+    </string>
+    <string name="title_settings_dialog">Permissions Required</string>
+
+    <string name="dialog_cancel">取消</string>
+    <string name="dialog_confirm">确认</string>
+    <string name="dialog_title">提示</string>
+    <string name="dialog_no_more_reminders">不再提醒</string>
+</resources>

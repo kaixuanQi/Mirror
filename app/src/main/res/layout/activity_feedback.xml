@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="com.excean.mirror.personal.FeedbackViewModel" />
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="@dimen/margin_normal"
+            android:paddingEnd="@dimen/margin_normal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="@string/question_type"
+                    android:textColor="#333333"
+                    android:textSize="16sp" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerQuestion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/question_description"
+                    android:textColor="#333333"
+                    android:textSize="16sp" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    >
+
+                    <EditText
+                        android:id="@+id/content"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/rect_f2_none_6"
+                        android:gravity="start"
+                        android:hint="@string/feedback_question_desc_hint"
+                        android:maxLength="200"
+                        android:minHeight="120dp"
+                        android:minLines="3"
+                        android:paddingStart="14dp"
+                        android:paddingTop="14dp"
+                        android:paddingEnd="14dp"
+                        android:paddingBottom="30dp"
+                        android:text="@={viewModel.description}"
+                        android:textColor="#666666"
+                        android:textColorHint="#999999"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_toStartOf="@id/total"
+                        android:paddingBottom="10dp"
+                        android:text="100"
+                        android:textColor="#ff4545"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/total"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentBottom="true"
+                        android:paddingBottom="10dp"
+                        android:paddingEnd="14dp"
+                        android:paddingStart="0dp"
+                        android:text="/200"
+                        android:textColor="#999999"
+                        android:textSize="12sp" />
+
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/feedback_contact_way"
+                    android:textColor="#333333"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/rect_f2_none_6"
+                    android:gravity="center_vertical"
+                    android:hint="@string/feedback_contact_way_hint"
+                    android:inputType="number"
+                    android:paddingStart="14dp"
+                    android:paddingEnd="14dp"
+                    android:singleLine="true"
+                    android:text="@={viewModel.contact}"
+                    android:textColor="#666666"
+                    android:textColorHint="#999999"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/bt_submit"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginStart="14dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginEnd="14dp"
+                android:layout_marginBottom="40dp"
+                android:background="@drawable/selector_enable_primary_dd_6"
+                android:textColor="@color/white"
+                android:text="@string/feedback_submit"
+                android:onClick="@{viewModel::submit}"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+    </ScrollView>
+</layout>

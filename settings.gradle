@@ -1,0 +1,7 @@
+rootProject.name = "Mirror"
+include ':app'
+include ':middleware'
+include ':commons:common'
+include ':MirrorPlugin:module'
+include ':MirrorPlugin:special'
+include ':MirrorPlugin:virtual'

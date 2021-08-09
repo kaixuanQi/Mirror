@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.android.vmmodule.special" >
+
+    <uses-sdk
+        android:minSdkVersion="19"
+        android:targetSdkVersion="29" />
+
+    <permission
+        android:name="${masterPkg}.assist"
+        android:protectionLevel="signatureOrSystem" />
+
+    <uses-permission android:name="${masterPkg}.assist" />
+
+    <application>
+        <provider
+            android:name="com.excelliance.kxqp.platform.TrampolineProvider"
+            android:authorities="${applicationId}:com.excelliance.kxqp.platform.TrampolineProvider"
+            android:exported="true"
+            android:grantUriPermissions="true"
+            android:permission="${masterPkg}.assist"
+            android:process=":lbcore" />
+        <provider
+            android:name="com.excelliance.kxqp.platform.PluginManagerProvider"
+            android:authorities="${applicationId}:com.excelliance.kxqp.platform.PluginManagerProvider"
+            android:exported="true"
+            android:permission="${masterPkg}.assist"
+            android:process=":lbcore" />
+    </application>
+
+</manifest>

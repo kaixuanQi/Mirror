@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="data"
+            type="com.excean.mirror.personal.vo.QuestionTag" />
+    </data>
+
+    <androidx.appcompat.widget.AppCompatTextView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/selector_enable_primary_f2_6"
+        android:gravity="center"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:text="@{data.tag}"
+        android:textColor="@drawable/txt_enable_ff_primary"
+        android:textSize="14sp"
+        app:selected="@{data.checked}" />
+
+
+</layout>
