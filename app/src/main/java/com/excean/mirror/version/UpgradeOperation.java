@@ -219,8 +219,7 @@ public class UpgradeOperation {
         }
         if (romDetail == null) {
             checkUpdate();
-            Response<VersionInfo> response = Api.getService(ApiService.class).requestUpdate().getFuture().getValue();
-            observer.onChanged(response);
+            Api.getService(ApiService.class).requestUpdate().observe(observer);
         } else {
             observer.onChanged(Response.success(romDetail));
         }
