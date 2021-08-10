@@ -3,13 +3,13 @@ plugins {
 }
 
 android {
-    compileSdkVersion 30
-    buildToolsVersion "30.0.3"
+    buildToolsVersion rootProject.ext.buildToolVersion
+    compileSdkVersion rootProject.ext.compileVersion
 
     defaultConfig {
         applicationId "mirror.plugin.package.holder"
-        minSdkVersion 19
-        targetSdkVersion 30
+        minSdkVersion rootProject.ext.minSdkVersion as int
+        targetSdkVersion rootProject.ext.targetSdkVersion as int
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -18,6 +18,7 @@ android {
                 'MIRROR_SERVICE'      : rootProject.ext.mirrorService ,
                 'MIRROR_PACKAGE':rootProject.ext.mirrorPackage,
                 'MIRROR_USER':rootProject.ext.mirrorUser,
+                'MIRROR_ATTRIBUTE':rootProject.ext.mirrorAttribute,
                 'masterPkg':applicationId
         ]
 //        ndk {
@@ -48,9 +49,9 @@ android {
 }
 
 dependencies {
-    implementation project(":module")
-    implementation project(":virtual")
-    implementation project(":special")
+    implementation project(":MirrorPlugin:module")
+    implementation project(":MirrorPlugin:virtual")
+    implementation project(":MirrorPlugin:special")
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'

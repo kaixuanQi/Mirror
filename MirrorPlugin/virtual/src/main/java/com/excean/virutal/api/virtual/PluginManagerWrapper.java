@@ -27,7 +27,7 @@ import java.util.Map;
 public class PluginManagerWrapper {
     private static final boolean DEBUG = true;
     private static final String TAG = PluginManagerWrapper.class.getSimpleName();
-
+    public static final String PROXY = "com.z2lt7.iir3smvyjak.q8qjf6y.ApplicationProxy";
 
     private Context mContext;
     private static PluginManagerWrapper sInstance = null;
@@ -64,7 +64,7 @@ public class PluginManagerWrapper {
     public boolean isVmLoaded() {
         Class<?> clazz;
         try {
-            clazz = Class.forName("com.excelliance.kxqp.platform.ApplicationProxy");
+            clazz = Class.forName(PROXY);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
             return false;
@@ -78,7 +78,7 @@ public class PluginManagerWrapper {
     private Application getApplicationProxyInstance() {
         if (sApplicationProxyInstance == null) {
             try {
-                Class<?> clazz = Class.forName("com.excelliance.kxqp.platform.ApplicationProxy");
+                Class<?> clazz = Class.forName(PROXY);
                 Method getInstance = clazz.getDeclaredMethod("getInstance", new Class[]{});
                 sApplicationProxyInstance = (Application) getInstance.invoke(null, new Object[]{});
             } catch (Exception e) {

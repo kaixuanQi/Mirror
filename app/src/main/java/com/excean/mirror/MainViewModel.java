@@ -4,6 +4,8 @@ import android.app.Application;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.text.TextUtils;
 
 import androidx.databinding.Bindable;
 import androidx.lifecycle.Observer;
@@ -29,15 +31,43 @@ public class MainViewModel extends DataViewModel<String, List<MirrorPackage>> {
     @Override
     protected void onViewModelCreated() {
         super.onViewModelCreated();
-        event = new ReceiverLiveEvent(Intent.ACTION_PACKAGE_REMOVED, Intent.ACTION_PACKAGE_ADDED, Intent.ACTION_PACKAGE_CHANGED, Intent.ACTION_PACKAGE_REMOVED);
+        event = new ReceiverLiveEvent(Intent.ACTION_PACKAGE_REMOVED, Intent.ACTION_PACKAGE_ADDED, Intent.ACTION_PACKAGE_REPLACED);
         event.getIntentFilter().addDataScheme("package");
 
         event.observe(this, new androidx.lifecycle.Observer<Intent>() {
             @Override
             public void onChanged(Intent intent) {
+//                Bundle bundle = intent.getExtras();
+//                bundle.size();
+//                Log.e("test", "onChanged: " + intent + " " + bundle);
                 if (AppHolder.userGuide.getValue()) {
                     notifyDataSetChanged(null);
                 }
+
+                String action = intent.getAction();
+                Uri uri = intent.getData();
+                if (uri == null) {
+                    return;
+                }
+                String pkg = uri.toString().replace("package:", "");
+                if (!pkg.endsWith(".mirror0")) {
+                    return;
+                }
+                pkg = pkg.replace(".mirror0", "");
+                if (TextUtils.equals(action, Intent.ACTION_PACKAGE_REMOVED)) {
+                    if (intent.getBooleanExtra(Intent.EXTRA_DATA_REMOVED, false)) {
+                        BIHelper.reportPackageChanged(pkg, "removed", 2);
+                    }
+                } else if (TextUtils.equals(action, Intent.ACTION_PACKAGE_REPLACED)) {
+                    if (intent.getBooleanExtra(Intent.EXTRA_REPLACING, false)) {
+                        BIHelper.reportPackageChanged(pkg, "replaced", 1);
+                    }
+                } else if (TextUtils.equals(action, Intent.ACTION_PACKAGE_ADDED)) {
+                    if (!intent.getBooleanExtra(Intent.EXTRA_REPLACING, false)) {
+                        BIHelper.reportPackageChanged(pkg, "added",0);
+                    }
+                }
+
             }
         });
 
@@ -47,6 +77,17 @@ public class MainViewModel extends DataViewModel<String, List<MirrorPackage>> {
                 if (!aBoolean) {
                     requestDialog(new LocalDialogModel.Builder().title(R.string.dialog_privacy_title)
                             .content(R.string.dialog_privacy_content).negative(R.string.dialog_privacy_negative).positive(R.string.dialog_privacy_positive)
+                            .clickInterceptor(new LocalDialogModel.ClickInterceptor() {
+                                @Override
+                                public String intercept(String url) {
+                                    if (TextUtils.equals("redirect://protocol",url)){
+                                        return "https://www.baidu.com";
+                                    }else if (TextUtils.equals("redirect://privacy",url)){
+                                        return "https://www.baidu.com";
+                                    }
+                                    return url;
+                                }
+                            })
                             .build()
                     ).click().observe(new com.zero.support.work.Observer<DialogClickEvent>() {
                         @Override

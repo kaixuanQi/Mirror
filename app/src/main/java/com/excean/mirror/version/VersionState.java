@@ -30,7 +30,7 @@ public class VersionState {
     }
 
     public boolean isPending() {
-        return state == STATE_PENDING;
+        return state == STATE_PENDING&&versionInfo!=null;
     }
 
     public boolean isDownloading() {

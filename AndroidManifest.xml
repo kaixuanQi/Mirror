@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.yyong.fshen"
+    android:versionCode="1"
+    android:versionName="0.0.1">
+    <application
+        android:icon="@drawable/icon"
+        android:label="@string/app_name"
+        android:largeHeap="true"
+        android:theme="@style/AppTheme">
+        <meta-data android:name="android.max_aspect" android:value="2.1" />
+        <meta-data android:name="OTAVersion" android:value="2009" />
+        <meta-data android:name="CompVersion" android:value="52803" />
+        <meta-data android:name="MainVersion" android:value="227400" />
+        <meta-data android:name="PluginVersion" android:value="7" />
+        <meta-data android:name="ShareVersion" android:value="140" />
+        <meta-data android:name="WebGoogleVersion" android:value="74" />
+        <meta-data android:name="MainChId" android:value="1610022" />
+        <meta-data android:name="SubChId" android:value="1" />
+    </application>
+    <supports-screens
+        android:anyDensity="true"
+        android:largeScreens="true"
+        android:normalScreens="true"
+        android:smallScreens="true" />
+</manifest>
+
+<!--  该文件仅仅提供配置所需要的参数信息,不要格式化！！！！！！ -->

@@ -3,12 +3,12 @@ plugins {
 }
 
 android {
-    compileSdkVersion 30
-    buildToolsVersion "30.0.3"
+    buildToolsVersion rootProject.ext.buildToolVersion
+    compileSdkVersion rootProject.ext.compileVersion
 
     defaultConfig {
-        minSdkVersion 19
-        targetSdkVersion 30
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
 
@@ -33,6 +33,7 @@ android {
 
 dependencies {
     api project(":commons:common")
+    api 'me.codeboy.android:align-text-view:2.3.2'
     api 'com.squareup.retrofit2:retrofit:2.9.0'
     api 'com.google.code.gson:gson:2.8.6'
     api 'com.squareup.okhttp3:okhttp:3.14.9'

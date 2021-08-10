@@ -2,7 +2,6 @@ package com.excean.mirror.producer;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -13,7 +12,12 @@ import android.view.View;
 import androidx.databinding.ObservableBoolean;
 
 import com.bumptech.glide.Glide;
+import com.excean.middleware.api.Api;
+import com.excean.mirror.AppHolder;
+import com.excean.mirror.BIHelper;
 import com.excean.mirror.R;
+import com.excean.mirror.api.ApiService;
+import com.excean.mirror.api.VirtualAttribute;
 import com.excean.mirror.plugin.InstallProvider;
 import com.zero.support.common.AppGlobal;
 import com.zero.support.common.component.ActivityResultEvent;
@@ -25,12 +29,15 @@ import com.zero.support.work.Response;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
 
 public class MirrorProducerViewModel extends DataViewModel<PackageInfo, Producer> {
     private PackageInfo mirror;
     private String name;
     private String version;
     private final ObservableBoolean prepare = new ObservableBoolean();
+    private final ObservableBoolean error = new ObservableBoolean();
     private boolean replace;
 
     @Override
@@ -67,12 +74,22 @@ public class MirrorProducerViewModel extends DataViewModel<PackageInfo, Producer
         return prepare;
     }
 
+    public ObservableBoolean getError() {
+        return error;
+    }
+
     @Override
     protected void onResourceChanged(Resource<Producer> resource) {
         super.onResourceChanged(resource);
-        if (resource.isSuccess()) {
+        if (resource.isLoading()) {
+            BIHelper.reportProduceStart(mirror.packageName);
+        } else if (resource.isSuccess()) {
+            BIHelper.reportProduceFinish(mirror.packageName, resource);
             prepare.set(true);
             requestInstall(resource);
+        } else if (resource.isError()) {
+            error.set(true);
+            BIHelper.reportProduceFinish(mirror.packageName, resource);
         }
     }
 
@@ -118,11 +135,20 @@ public class MirrorProducerViewModel extends DataViewModel<PackageInfo, Producer
 
     public void onClickInstall(View view) {
         requestInstall(resource().getValue());
+        BIHelper.reportRequestInstall(mirror.packageName);
     }
 
+    public void onClickRetry(View view) {
+        error.set(false);
+        notifyDataSetChanged(mirror);
+    }
 
     @Override
     protected Response<Producer> performExecute(PackageInfo info) throws Exception {
+        Response<List<VirtualAttribute>> result = Api.getService(ApiService.class).requestVirtualAttribute(Collections.singletonList(info.packageName)).getFuture().getValue();
+        if (result.isSuccessful()) {
+            AppHolder.updateVirtualAttribute(result.data());
+        }
         File icon = Glide.with(AppGlobal.getApplication())
                 .downloadOnly()
                 .load(info)
@@ -133,15 +159,15 @@ public class MirrorProducerViewModel extends DataViewModel<PackageInfo, Producer
 
         Producer producer = ProducerManager.getDefault().getProducer(info.packageName);
         producer.produce(icon, title + "分身", 0, getAbiName());
-        Thread.sleep(1000);
         return Response.success(producer);
     }
 
     String getAbiName() throws IOException {
-        String name=getAbiNameTest();
+        String name = getAbiNameTest();
         Log.e("mirror", "getAbiName: " + name);
         return name;
     }
+
     private String getAbiNameTest() throws IOException {
         String name = new File(mirror.applicationInfo.nativeLibraryDir).getCanonicalFile().getName();
         if (name.contains("arm")) {

@@ -15,14 +15,18 @@ public class MirrorPackage extends BaseObject implements Serializable {
     private String name;
     private String indexKey;
     private String letter;
-    private boolean hasMirror;
+    private PackageInfo mirrorPackageInfo;
 
-    public void setHasMirror(boolean hasMirror) {
-        this.hasMirror = hasMirror;
+    public void setMirrorPackageInfo(PackageInfo mirrorPackageInfo) {
+        this.mirrorPackageInfo = mirrorPackageInfo;
     }
 
     public boolean isHasMirror() {
-        return hasMirror;
+        return mirrorPackageInfo != null;
+    }
+
+    public PackageInfo getMirrorPackageInfo() {
+        return mirrorPackageInfo;
     }
 
     public MirrorPackage(PackageInfo info, String name) {

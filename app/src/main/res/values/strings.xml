@@ -1,6 +1,11 @@
 <resources>
     <string name="dialog_privacy_title">个人信息保护提示</string>
-    <string name="dialog_privacy_content">希望您仔细阅读《隐私政策》（以下简称“本政策”），详细了解我们对信息的收集、使用方式，以便您更好地了解我们的服务并作出适当的选择。 若您使用我们的服务，即表示您认同我们在本政策中所述内容。若您有问题，请联系我们。</string>
+    <string name="dialog_privacy_content">
+         <![CDATA[
+
+         <p>您的隐私对我们很重要，我们将按照法律要求，认真对待您的隐私，采取严格的安全保护措施。在您使用我们的服务前，请详细阅读<a href="redirect://privacy">《隐私政策》</a>和<a href="redirect://protocol"> 《服务条款》</a>，了解我们如何收集、存储、使用、披露和保护您的个人信息。我方通过本隐私政策明确向您告知：我们收集的信息取决于您使用什么服务以及如何使用它们。请您知晓后点击下方“同意”按钮开始使用我们的服务。如果您不同意本隐私政策的任何内容，您应当立即停止使用我方平台服务。</p>]]>
+
+       </string>
     <string name="dialog_privacy_negative">不同意并退出</string>
     <string name="dialog_privacy_positive">同意</string>
     <string name="dialog_error_disable_cell_data">当前您正在使用非WiFi网络环境，是否允许使用流量下载？</string>

@@ -12,9 +12,12 @@ import com.excean.mirror.databinding.ActivityMirrorBinding;
 import com.zero.support.common.AppGlobal;
 
 public class MirrorActivity extends TitleActivity {
-    public static void startActivity(Activity activity, PackageInfo info) {
+
+
+    public static void startActivity(Activity activity, PackageInfo info, int from) {
         Intent intent = new Intent(activity, MirrorActivity.class);
         intent.putExtra("mirror", info);
+        intent.putExtra("from", from);
         activity.startActivity(intent);
     }
 

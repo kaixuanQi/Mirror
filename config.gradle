@@ -1,15 +1,19 @@
 
 ext {
     buildToolVersion = "30.0.3"
-    compileVersion = "android-30"
-    minSdkVersion = "19"
-    targetSdkVersion = "29"
-    pkg = "com.bs.cvoice"
+    compileVersion = 30
+    minSdkVersion = 19
+    targetSdkVersion = 30
+    pkg = "com.yyong.fshen"
     mainChId = "1910022"
     subChId = "1"
-    versionCode = "3"
+    versionCode = 3
     versionName = "1.0.2"
-    sharedUserId = "com.excean.mirror"
+    sharedUserId = "com.yyong.fshen"
+    mirrorPackage = 'mirror.package.holder'
+    mirrorUser = 'mirror.user.holder'
+    mirrorAttribute= 'mirror.attribute.holder'
+    mirrorService = 'mirror.service.holder'
     macro = [
             //#LogUtil输出,缺省输出log
             BUILD_LOG_SWITCH: false,

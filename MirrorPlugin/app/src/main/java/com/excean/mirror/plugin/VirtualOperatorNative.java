@@ -6,7 +6,9 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.text.TextUtils;
+import android.util.Log;
 
+import com.excean.virutal.api.virtual.ActivityLaunchCallback;
 import com.excean.virutal.api.virtual.Mirror;
 import com.excean.virutal.api.virtual.PluginManagerWrapper;
 import com.excean.virutal.api.virtual.VirtualOperator;
@@ -38,12 +40,13 @@ public class VirtualOperatorNative implements VirtualOperator {
         return mirror;
     }
 
+
     @Override
-    public void startPlugin() {
-//        Virtual.connect();
+    public void startPlugin(long attribute, ActivityLaunchCallback callback) {
         PackageInfo packageInfo = PluginManagerWrapper.getInstance().getPackageInfo(mirror.getMirrorPackageName(), PackageManager.GET_META_DATA);
         if (mirror.getMirrorPackageInfo() == null) {
             //应用被卸载
+            Log.e("mirror", "startPlugin: " + mirror.getMirrorPackageName());
             return;
         }
         if (packageInfo == null || !TextUtils.equals(packageInfo.applicationInfo.publicSourceDir, mirror.getMirrorPackageInfo().applicationInfo.publicSourceDir)) {
@@ -54,12 +57,16 @@ public class VirtualOperatorNative implements VirtualOperator {
         intent.setPackage(mirror.getMirrorPackageName());
         intent.addCategory(Intent.CATEGORY_LAUNCHER);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        PluginManagerWrapper.getInstance().preStartProcess(mirror.userId,mirror.getMirrorPackageName(),0,intent);
-        int ret = PluginManagerWrapper.getInstance().startActivity(mirror.userId, intent);
-    }
+        if (attribute != 0) {
+            Log.e("mirror", "startPlugin: " + mirror.getMirrorPackageName() + " with " + attribute);
+            PluginManagerWrapper.getInstance().updatePackageCapFlag(mirror.userId, mirror.mirrorPackageName, attribute, false);
+        }
+        PluginManagerWrapper.getInstance().preStartProcess(mirror.userId, mirror.getMirrorPackageName(), 0, intent);
 
-    @Override
-    public void startPluginWithFlags(int flags) {
+        int ret = PluginManagerWrapper.getInstance().startActivity(mirror.userId, intent);
+        if (callback != null) {
+            callback.onLaunch(ret);
+        }
     }
 
     @Override

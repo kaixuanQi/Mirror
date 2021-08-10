@@ -22,6 +22,7 @@ public class MirrorViewModel extends CommonViewModel {
     private String name;
     private String version;
     private Mirror mirror;
+    private int from;
 
     @Override
     protected void onViewModelCreated() {
@@ -32,6 +33,7 @@ public class MirrorViewModel extends CommonViewModel {
     protected void onAttach(Activity activity) {
         super.onAttach(activity);
         packageInfo = activity.getIntent().getParcelableExtra("mirror");
+        from = activity.getIntent().getIntExtra("from",BIHelper.LAUNCH_MAIN);
         version = activity.getString(R.string.about_version_name, packageInfo.versionName);
         PackageManager pm = activity.getPackageManager();
         name = packageInfo.applicationInfo.loadLabel(activity.getPackageManager()).toString();
@@ -53,9 +55,11 @@ public class MirrorViewModel extends CommonViewModel {
     public void onClickLauncher(View view) {
         Intent intent = requireActivity().getPackageManager().getLaunchIntentForPackage(packageInfo.packageName);
         requireActivity().startActivity(intent);
+        BIHelper.reportRequestLaunch(mirror.mirrorPackageName,from);
     }
 
     public void onClickFix(View view) {
+        BIHelper.reportRequestFix(mirror.mirrorPackageName);
         MirrorProducerActivity.startActivity(requireActivity(), mirror.getMirrorPackageInfo(),true);
     }
 
@@ -68,6 +72,7 @@ public class MirrorViewModel extends CommonViewModel {
             @Override
             public void onChanged(DialogClickEvent dialogClickEvent) {
                 if (dialogClickEvent.isNegative()) {
+                    BIHelper.reportRequestUninstall(mirror.mirrorPackageName);
                     requestUninstall();
                 } else {
 

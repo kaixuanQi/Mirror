@@ -2,22 +2,23 @@ plugins {
     id 'com.android.application'
 }
 
-android {
-    compileSdkVersion 29
-//    buildToolsVersion "30.0.3"
+android{
+
+    compileSdkVersion rootProject.ext.compileVersion
+    buildToolsVersion rootProject.ext.buildToolVersion
 
     defaultConfig {
-        applicationId "com.excean.mirror"
-        minSdkVersion 21
-        targetSdkVersion 29
-        versionCode 1
-        versionName "1.0"
+        applicationId rootProject.ext.pkg
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode  rootProject.ext.versionCode
+        versionName  rootProject.ext.versionName
         manifestPlaceholders = [
                 sharedUserId  : rootProject.ext.sharedUserId,
                 versionName  : rootProject.ext.versionName,
                 mainChId     : rootProject.ext.mainChId,
                 subChId      : rootProject.ext.subChId,
-//                APPLOG_SCHEME: "rangersapplog.d56cdde447dc5392"
+                APPLOG_SCHEME: "rangersapplog.d6bbf88017f43bce"
         ]
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
@@ -25,7 +26,7 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug {
@@ -45,6 +46,8 @@ android {
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation fileTree(dir: "libs", include: ["*.aar"])
+
     annotationProcessor "androidx.room:room-compiler:2.2.6"
 
     implementation project(":middleware")

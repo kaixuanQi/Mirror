@@ -3,6 +3,7 @@ package com.excean.mirror;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 
@@ -16,22 +17,17 @@ public class StubActivity extends CommonActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        String pkg = getCallingPackage();
         setResult(Activity.RESULT_OK);
         IBinder binder = getIntent().getExtras().getBinder("operator");
         VirtualOperator operator = Binder.asInterface(binder, VirtualOperator.class);
         operator.finishSplashActivity();
-        AppExecutor.async().execute(new Runnable() {
-            @Override
-            public void run() {
-                operator.startPlugin();
-                AppExecutor.main().execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        finish();
-                    }
-                });
-            }
+        AppExecutor.async().execute(() -> {
+            operator.startPlugin(AppHolder.getVirtualAttribute(getMirrorPackage()), result -> {
+                if (result > 0) {
+                    BIHelper.reportLaunchFinish(getMirrorPackage(), getLaunchFrom(), result);
+                }
+            });
+            AppExecutor.main().execute(this::finish);
         });
     }
 
@@ -39,4 +35,18 @@ public class StubActivity extends CommonActivity {
     public void onBackPressed() {
 //        super.onBackPressed();
     }
+
+    private String getMirrorPackage() {
+        return getIntent().getStringExtra("mirrorPackage");
+    }
+
+    private int getLaunchFrom() {
+        return getIntent().getIntExtra("from", 0);
+    }
+
+    private int getMirrorUserId() {
+        return getIntent().getIntExtra("userId", 0);
+    }
+
+
 }

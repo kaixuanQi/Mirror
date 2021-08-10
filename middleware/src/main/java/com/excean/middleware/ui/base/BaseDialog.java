@@ -32,9 +32,9 @@ public class BaseDialog extends CommonDialog {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().addFlags(Window.FEATURE_NO_TITLE);
-        getWindow().setBackgroundDrawable(null);
         binding = DataBindingUtil.inflate(LayoutInflater.from(getContext()), R.layout.dialog_common, null, false);
         setContentView(binding.getRoot());
+        getWindow().setBackgroundDrawable(null);
         setCancelable(false);
 
 

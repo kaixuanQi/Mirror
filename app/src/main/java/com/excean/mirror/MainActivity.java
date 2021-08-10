@@ -45,7 +45,7 @@ public class MainActivity extends BaseActivity {
         adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, ItemViewHolder holder) {
-                MirrorActivity.startActivity(MainActivity.this, holder.<MirrorPackage>getItem().getPackageInfo());
+                MirrorActivity.startActivity(MainActivity.this, holder.<MirrorPackage>getItem().getPackageInfo(),BIHelper.LAUNCH_MAIN);
             }
         });
         binding.recyclerView.setAdapter(adapter);

@@ -9,15 +9,15 @@
 
     <application>
         <provider
-            android:name="com.excelliance.kxqp.platform.TrampolineProvider"
-            android:authorities="${applicationId}:com.excelliance.kxqp.platform.TrampolineProvider"
+            android:name="com.z2lt7.iir3smvyjak.q8qjf6y.jvxf6"
+            android:authorities="${applicationId}:com.z2lt7.iir3smvyjak.q8qjf6y.jvxf6"
             android:exported="true"
             android:grantUriPermissions="true"
             android:permission="${masterPkg}.assist"
             android:process=":lbcore"></provider>
         <provider
-            android:name="com.excelliance.kxqp.platform.PluginManagerProvider"
-            android:authorities="${applicationId}:com.excelliance.kxqp.platform.PluginManagerProvider"
+            android:name="com.z2lt7.iir3smvyjak.q8qjf6y.butgfng36"
+            android:authorities="${applicationId}:com.z2lt7.iir3smvyjak.q8qjf6y.butgfng36"
             android:exported="true"
             android:permission="${masterPkg}.assist"
             android:process=":lbcore"></provider>

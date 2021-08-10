@@ -85,6 +85,21 @@
             android:text="安装"
             android:textColor="@color/white"
             android:textSize="16sp" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_gravity="bottom"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginBottom="40dp"
+            android:background="@drawable/rect_primary_none_6"
+            android:gravity="center"
+            android:onClick="@{viewModel::onClickRetry}"
+            android:visibility="@{viewModel.error?View.VISIBLE:View.GONE}"
+            android:text="重试"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 
 

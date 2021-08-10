@@ -38,7 +38,7 @@ public class LocalDialogModel extends DialogModel {
     protected final int icon;
     protected final String contentText;
     Observable<Integer> preferences;
-
+    private ClickInterceptor interceptor;
     protected LocalDialogModel(Builder builder) {
         super(builder.name);
         this.negative = builder.negative;
@@ -50,6 +50,7 @@ public class LocalDialogModel extends DialogModel {
         this.args = builder.args;
         this.key = builder.key;
         this.times = builder.times;
+        this.interceptor = builder.interceptor;
         if (!TextUtils.isEmpty(key)) {
             preferences = AppGlobal.sharedPreferences(GROUP_DIALOG, key, 0);
             currentTimes = preferences.getValue();
@@ -113,7 +114,11 @@ public class LocalDialogModel extends DialogModel {
                 ClickableSpan clickableSpan = new URLSpan(span.getURL()) {
                     @Override
                     public void onClick(View widget) {
-                        LocalDialogModel.this.onClickSpan(widget, span.getURL());
+                        String url = span.getURL();
+                        if (interceptor!=null){
+                            url = interceptor.intercept(url);
+                        }
+                        LocalDialogModel.this.onClickSpan(widget,url);
                     }
                 };
                 spanned.removeSpan(span);
@@ -148,6 +153,10 @@ public class LocalDialogModel extends DialogModel {
         return requireViewModel().requireActivity().getString(notify);
     }
 
+    public interface ClickInterceptor {
+        String intercept(String url);
+    }
+
     public static class Builder {
         private int icon;
         private int negative = R.string.dialog_cancel;
@@ -161,9 +170,15 @@ public class LocalDialogModel extends DialogModel {
         private String key;
         private int times;
         private String name;
+        private ClickInterceptor interceptor;
 
         public Builder name(String name) {
             this.name = name;
+            return this;
+        }
+
+        public Builder clickInterceptor(ClickInterceptor interceptor) {
+            this.interceptor = interceptor;
             return this;
         }
 

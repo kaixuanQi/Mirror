@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    >
+    android:background="@color/white">
 
     <ImageView
         android:layout_width="wrap_content"
@@ -19,9 +18,8 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="更轻松实现多开分身\n
-支持超多款应用游戏\n
-稳定快速无封号风险"
+        android:gravity="center"
+        android:text="更轻松实现多开分身\n支持超多款应用游戏\n稳定快速无封号风险"
         android:textColor="#ff333333"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"

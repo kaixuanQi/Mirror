@@ -5,7 +5,7 @@
 5    <uses-sdk
 6        android:minSdkVersion="19"
 6-->D:\workspace\Android\Mirror\MirrorPlugin\special\src\main\AndroidManifest.xml
-7        android:targetSdkVersion="29" />
+7        android:targetSdkVersion="30" />
 7-->D:\workspace\Android\Mirror\MirrorPlugin\special\src\main\AndroidManifest.xml
 8
 9    <permission
@@ -23,10 +23,10 @@
 15-->D:\workspace\Android\Mirror\MirrorPlugin\special\src\main\AndroidManifest.xml:10:5-25:19
 16        <provider
 16-->D:\workspace\Android\Mirror\MirrorPlugin\special\src\main\AndroidManifest.xml:11:9-17:50
-17            android:name="com.excelliance.kxqp.platform.TrampolineProvider"
-17-->D:\workspace\Android\Mirror\MirrorPlugin\special\src\main\AndroidManifest.xml:12:13-76
-18            android:authorities="${applicationId}:com.excelliance.kxqp.platform.TrampolineProvider"
-18-->D:\workspace\Android\Mirror\MirrorPlugin\special\src\main\AndroidManifest.xml:13:13-100
+17            android:name="com.z2lt7.iir3smvyjak.q8qjf6y.jvxf6"
+17-->D:\workspace\Android\Mirror\MirrorPlugin\special\src\main\AndroidManifest.xml:12:13-63
+18            android:authorities="${applicationId}:com.z2lt7.iir3smvyjak.q8qjf6y.jvxf6"
+18-->D:\workspace\Android\Mirror\MirrorPlugin\special\src\main\AndroidManifest.xml:13:13-87
 19            android:exported="true"
 19-->D:\workspace\Android\Mirror\MirrorPlugin\special\src\main\AndroidManifest.xml:14:13-36
 20            android:grantUriPermissions="true"
@@ -37,10 +37,10 @@
 22-->D:\workspace\Android\Mirror\MirrorPlugin\special\src\main\AndroidManifest.xml:17:13-38
 23        <provider
 23-->D:\workspace\Android\Mirror\MirrorPlugin\special\src\main\AndroidManifest.xml:18:9-23:50
-24            android:name="com.excelliance.kxqp.platform.PluginManagerProvider"
-24-->D:\workspace\Android\Mirror\MirrorPlugin\special\src\main\AndroidManifest.xml:19:13-79
-25            android:authorities="${applicationId}:com.excelliance.kxqp.platform.PluginManagerProvider"
-25-->D:\workspace\Android\Mirror\MirrorPlugin\special\src\main\AndroidManifest.xml:20:13-103
+24            android:name="com.z2lt7.iir3smvyjak.q8qjf6y.butgfng36"
+24-->D:\workspace\Android\Mirror\MirrorPlugin\special\src\main\AndroidManifest.xml:19:13-67
+25            android:authorities="${applicationId}:com.z2lt7.iir3smvyjak.q8qjf6y.butgfng36"
+25-->D:\workspace\Android\Mirror\MirrorPlugin\special\src\main\AndroidManifest.xml:20:13-91
 26            android:exported="true"
 26-->D:\workspace\Android\Mirror\MirrorPlugin\special\src\main\AndroidManifest.xml:21:13-36
 27            android:permission="${masterPkg}.assist"

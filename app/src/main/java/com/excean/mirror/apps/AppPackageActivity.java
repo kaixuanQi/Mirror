@@ -1,15 +1,15 @@
 package com.excean.mirror.apps;
 
-import android.content.pm.PackageInfo;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 
 import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.excean.middleware.ui.base.TitleActivity;
+import com.excean.mirror.BIHelper;
 import com.excean.mirror.BR;
+import com.excean.mirror.MirrorActivity;
 import com.excean.mirror.R;
 import com.excean.mirror.databinding.ActivityPackagesBinding;
 import com.excean.mirror.producer.MirrorProducerActivity;
@@ -41,9 +41,14 @@ public class AppPackageActivity extends TitleActivity {
         adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, ItemViewHolder holder) {
-                PackageInfo info  =holder.<MirrorPackage>getItem(MirrorPackage.class).getPackageInfo();
-                MirrorProducerActivity.startActivity(AppPackageActivity.this,info,false);
-                finish();
+                MirrorPackage info = holder.<MirrorPackage>getItem(MirrorPackage.class);
+                if (info.isHasMirror()) {
+                    MirrorActivity.startActivity(AppPackageActivity.this, info.getMirrorPackageInfo(), BIHelper.LAUNCH_MANAGER);
+                } else {
+                    BIHelper.reportRequestProduce(info.getPackageInfo().packageName);
+                    MirrorProducerActivity.startActivity(AppPackageActivity.this, info.getPackageInfo(), true);
+                    finish();
+                }
             }
         });
         binding.recyclerView.setLayoutManager(new StickyHeadersLinearLayoutManager<>(this));
@@ -53,7 +58,7 @@ public class AppPackageActivity extends TitleActivity {
         binding.slideBar.setOnTouchLetterChangeListener(new SlideBar.OnTouchLetterChangeListener() {
             @Override
             public void onTouchLetterChange(boolean isTouch, String letter) {
-                binding.recyclerView.scrollToPosition(viewModel.indexOf(adapter.getItems().values(),letter));
+                binding.recyclerView.scrollToPosition(viewModel.indexOf(adapter.getItems().values(), letter));
             }
         });
         viewModel.resource().asLive().observe(this, resource -> {

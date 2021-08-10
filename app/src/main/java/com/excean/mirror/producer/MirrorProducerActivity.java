@@ -13,7 +13,9 @@ import androidx.lifecycle.Observer;
 import com.excean.middleware.ui.base.TitleActivity;
 import com.excean.mirror.R;
 import com.excean.mirror.databinding.ActivityProducerBinding;
+import com.zero.support.common.AppGlobal;
 import com.zero.support.common.vo.Resource;
+import com.zero.support.work.WorkErrorCode;
 
 public class MirrorProducerActivity extends TitleActivity {
     public static void startActivity(Activity activity, PackageInfo info, boolean replace) {
@@ -41,7 +43,14 @@ public class MirrorProducerActivity extends TitleActivity {
                 if (resource.isLoading()) {
                     postStartAnimation();
                 } else {
-                    stopAnimation();
+                    postStopAnimation();
+                    if (resource.isError()) {
+                        if (resource.code == WorkErrorCode.STORAGE_OVER_FLOW) {
+                            AppGlobal.sendMessage("空间不足");
+                        } else {
+                            AppGlobal.sendMessage("网络连接失败，请检查网络设置");
+                        }
+                    }
                 }
             }
         });
@@ -57,10 +66,20 @@ public class MirrorProducerActivity extends TitleActivity {
         });
     }
 
+    private void postStopAnimation() {
+        binding.icon.post(new Runnable() {
+            @Override
+            public void run() {
+                stopAnimation();
+            }
+        });
+    }
+
+
     private void startAnimation() {
         Animation animation = new ScaleAnimation(1.0f, 1.2f, 1.0f, 1.2f, binding.icon.getWidth() * 0.5f, binding.icon.getHeight() * 0.5f);
         animation.setDuration(1500);
-        animation.setRepeatCount(3);
+        animation.setRepeatCount(Animation.INFINITE);
         animation.setFillAfter(false);
         binding.icon.startAnimation(animation);
     }

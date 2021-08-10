@@ -3,6 +3,7 @@ package com.excean.virutal.api.virtual;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 
 import java.util.LinkedHashMap;
@@ -13,10 +14,12 @@ public class Mirror {
     public String name;
     public String mirrorPackageName = "";
     public String servicePackageName;
+    public long attribute;
     public static final String KEY_SERVICE = "mirror.service";
     public static final String KEY_USER = "mirror.user";
     public static final String KEY_PACKAGE = "mirror.package";
 
+    public static final String KEY_ATTRIBUTE = "mirror.attribute";
 
     private static final Map<String, Mirror> mirrors = new LinkedHashMap<>();
     private PackageInfo packageInfo;
@@ -50,9 +53,11 @@ public class Mirror {
             if (bundle == null) {
                 throw new RuntimeException();
             }
+            this.name = String.valueOf(packageInfo.applicationInfo.loadLabel(pm));
             this.servicePackageName = String.valueOf(bundle.get(KEY_SERVICE));
             this.userId = Integer.parseInt(String.valueOf(bundle.get(KEY_USER)));
             this.mirrorPackageName = String.valueOf(bundle.get(KEY_PACKAGE));
+            this.attribute = Long.parseLong(String.valueOf(bundle.get(KEY_ATTRIBUTE)));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -65,11 +70,11 @@ public class Mirror {
 
     /**
      * @param pm
-     * @param packageName 分身包名
      */
     public Mirror(PackageManager pm, PackageInfo info) {
         try {
             packageInfo = info;
+            this.name = String.valueOf(packageInfo.applicationInfo.loadLabel(pm));
             Bundle bundle = packageInfo.applicationInfo.metaData;
             if (bundle == null) {
                 throw new RuntimeException();

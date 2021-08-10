@@ -40,7 +40,7 @@ public class Producer {
     public void produce(File icon, String title, int userId, String abiName) throws IOException {
         this.targetPackageName = packageName + ".mirror" + userId;
         FileUtils.extractAsset(AppGlobal.getApplication(), "resource.apk", material);
-        FileUtils.extractAsset(AppGlobal.getApplication(), "test.bks", keystore);
+        FileUtils.extractAsset(AppGlobal.getApplication(), "target.bks", keystore);
         generateSource(packageName, icon, title, userId, abiName);
         FileUtils.deleteQuietly(material);
         MirrorHelper.sign(keystore, src, out);

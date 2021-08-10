@@ -60,9 +60,9 @@ public class AppPackageViewModel extends DataViewModel<String, List<Cell>> {
     @Override
     protected Response<List<Cell>> performExecute(String s) {
         PackageManager pm = AppGlobal.getApplication().getPackageManager();
-        List<PackageInfo> list = pm.getInstalledPackages(0);
+        List<PackageInfo> list = pm.getInstalledPackages(PackageManager.GET_META_DATA);
         Map<String, List<MirrorPackage>> map = new HashMap<>(list.size());
-        Set<String> set = new HashSet<>();
+        Map<String,PackageInfo> set = new HashMap<>();
         int size = 0;
         for (PackageInfo info : list) {
             if ((info.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0) {
@@ -72,7 +72,7 @@ public class AppPackageViewModel extends DataViewModel<String, List<Cell>> {
                 continue;
             }
             if (info.packageName.endsWith(".mirror0")){
-                set.add(info.packageName.replace(".mirror0",""));
+                set.put(info.packageName.replace(".mirror0",""),info);
                 continue;
             }
             MirrorPackage mirrorPackage = new MirrorPackage(info, info.applicationInfo.loadLabel(pm).toString());
@@ -95,9 +95,7 @@ public class AppPackageViewModel extends DataViewModel<String, List<Cell>> {
             cells.add(new LetterCell(letter));
             cells.addAll(packages);
             for (MirrorPackage p :packages) {
-                if (set.contains(p.getPackageInfo().packageName)){
-                    p.setHasMirror(true);
-                }
+                p.setMirrorPackageInfo(set.get(p.getPackageInfo().packageName));
             }
         }
         return Response.success(cells);
