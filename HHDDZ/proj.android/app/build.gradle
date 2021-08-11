@@ -1,7 +1,10 @@
 plugins {
     id 'com.android.application'
 }
-
+def keystorePropertiesFile = rootProject.file("ant.properties")
+def keystoreProperties = new Properties()
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+print(keystoreProperties)
 android{
 
     compileSdkVersion rootProject.ext.compileVersion
@@ -23,10 +26,18 @@ android{
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
-
+    signingConfigs {
+        main {
+            keyAlias keystoreProperties['key.alias']
+            keyPassword keystoreProperties['key.alias.password']
+            storeFile file("${rootProject.projectDir}/" + keystoreProperties['key.store'])
+            storePassword keystoreProperties['key.store.password']
+        }
+    }
     buildTypes {
         release {
             minifyEnabled true
+            signingConfig signingConfigs.main
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug {
