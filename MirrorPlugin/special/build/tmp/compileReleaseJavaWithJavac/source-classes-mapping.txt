@@ -1,2 +1,0 @@
-com/android/vmmodule/special/BuildConfig.java
- com.android.vmmodule.special.BuildConfig
