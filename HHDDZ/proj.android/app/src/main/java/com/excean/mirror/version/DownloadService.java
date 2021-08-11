@@ -101,7 +101,7 @@ public class DownloadService extends Service {
             builder = builder.setPriority(Notification.PRIORITY_MIN);
         }
 
-        builder.setSmallIcon(R.mipmap.ic_launcher).setOngoing(false);
+        builder.setSmallIcon(R.drawable.icon).setOngoing(false);
 
         if (title == null) {
             title = "Downloading additional file";
@@ -143,7 +143,7 @@ public class DownloadService extends Service {
             builder.setContentIntent(pendingIntent);
         }
 
-        builder.setSmallIcon(R.mipmap.ic_launcher).setOngoing(false);
+        builder.setSmallIcon(R.drawable.icon).setOngoing(false);
 
         if (title == null) {
             title = "Downloading additional file";
