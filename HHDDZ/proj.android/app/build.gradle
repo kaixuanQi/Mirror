@@ -30,7 +30,7 @@ android{
         main {
             keyAlias keystoreProperties['key.alias']
             keyPassword keystoreProperties['key.alias.password']
-            storeFile file("${rootProject.projectDir}/" + keystoreProperties['key.store'])
+            storeFile file(keystoreProperties['key.store'])
             storePassword keystoreProperties['key.store.password']
         }
     }
