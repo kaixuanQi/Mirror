@@ -56,8 +56,41 @@ android{
         enabled = true
     }
 
+    variantFilter { variant ->
+        def names = variant.flavors.name
+        if (variant.buildType.name == "debug" ) {
+            variant.ignore = true
+        } else {
+            println(" ----- release name:" + names[0])
+        }
+    }
+
 }
 
+android.applicationVariants.all { variant ->
+    variant.outputs.each { output ->
+        def outputFile = output.outputFile
+        if (outputFile != null && outputFile.name.endsWith('.apk')) {
+            if (variant.buildType.name == "release") {
+                output.outputFileName = "${applicationId}_${rootProject.ext.mainChId}_${rootProject.ext.subChId}_release.apk"
+            }
+
+        }
+    }
+}
+build.doLast {
+    FileTree apks = fileTree(dir: "${buildDir}" + "/outputs/apk/release", include: ['*.apk'])
+    apks.each { File file ->
+        if (file.name.endsWith("unaligned.apk")) {
+            delete file
+        } else {
+            copy {
+                from file
+                into "${buildDir}" + "/outputs/apk/"
+            }
+        }
+    }
+}
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation fileTree(dir: "libs", include: ["*.aar"])
