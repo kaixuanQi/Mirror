@@ -5,10 +5,10 @@ ext {
     minSdkVersion = 19
     targetSdkVersion = 30
     pkg = "com.yyong.fshen"
-    mainChId = "1910022"
+    mainChId = "32022"
     subChId = "1"
-    versionCode = 3
-    versionName = "1.0.2"
+    versionCode = 1
+    versionName = "1.0.0"
     sharedUserId = "com.yyong.fshen"
     mirrorPackage = 'mirror.package.holder'
     mirrorUser = 'mirror.user.holder'
