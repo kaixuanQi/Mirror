@@ -77,8 +77,8 @@ public class AppPackageViewModel extends DataViewModel<String, List<Cell>> {
                         });
                     } else {
                         requireActivity().finish();
-                        event.dismiss();
                     }
+                    event.dismiss();
                 });
             } else {
                 prepared.set(true);
