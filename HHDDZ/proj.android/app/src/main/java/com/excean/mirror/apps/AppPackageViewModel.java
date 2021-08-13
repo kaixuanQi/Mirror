@@ -140,6 +140,6 @@ public class AppPackageViewModel extends DataViewModel<String, List<Cell>> {
                 }
             }
         }
-        return 0;
+        return -1;
     }
 }

@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.View;
 
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.excean.middleware.ui.base.TitleActivity;
 import com.excean.mirror.BIHelper;
@@ -58,7 +60,14 @@ public class AppPackageActivity extends TitleActivity {
         binding.slideBar.setOnTouchLetterChangeListener(new SlideBar.OnTouchLetterChangeListener() {
             @Override
             public void onTouchLetterChange(boolean isTouch, String letter) {
-                binding.recyclerView.scrollToPosition(viewModel.indexOf(adapter.getItems().values(), letter));
+                int index = viewModel.indexOf(adapter.getItems().values(), letter);
+                LinearLayoutManager manager = (LinearLayoutManager) binding.recyclerView.getLayoutManager();
+                if (manager!=null){
+                    if (index!=-1){
+                        manager.scrollToPositionWithOffset(index,0);
+                    }
+                }
+
             }
         });
         viewModel.resource().asLive().observe(this, resource -> {
