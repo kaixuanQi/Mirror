@@ -77,9 +77,9 @@ public class MainViewModel extends DataViewModel<String, List<MirrorPackage>> {
                                 @Override
                                 public String intercept(String url) {
                                     if (TextUtils.equals("redirect://protocol", url)) {
-                                        return "https://www.baidu.com";
+                                        return AppHolder.PROTOCOL;
                                     } else if (TextUtils.equals("redirect://privacy", url)) {
-                                        return "https://www.baidu.com";
+                                        return AppHolder.PRIVACY;
                                     }
                                     return url;
                                 }
@@ -92,7 +92,6 @@ public class MainViewModel extends DataViewModel<String, List<MirrorPackage>> {
                                 AppHolder.userGuide.setValue(true);
                             } else {
                                 ActivityManager.finishAll();
-                                System.exit(0);
                             }
                             dialogClickEvent.dismiss();
                         }

@@ -18,7 +18,8 @@ public class AppHolder {
     public static final SharedPreferenceObservable<Boolean> userGuideProducer = AppGlobal.sharedPreferences("user_guide", "producer", false);
     public static final SharedPreferenceObservable<Boolean> userGuideProducerClick = AppGlobal.sharedPreferences("user_guide", "producer_click", false);
 
-
+    public static final String PRIVACY = "https://iflydocs.com/h/s/doc/td8rNZCKqRinmJx9";
+    public static final String PROTOCOL = "https://iflydocs.com/h/s/doc/td8rNZCKqRinmJx9";
     public static long getVirtualAttribute(String packageName) {
         SharedPreferences preferences = AppGlobal.sharedPreferences("virtual_attr");
         return preferences.getLong(packageName, 0L);

@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.excean.middleware.ui.base.TitleActivity;
 import com.excean.middleware.ui.base.WebViewActivity;
+import com.excean.mirror.AppHolder;
 import com.excean.mirror.BR;
 import com.excean.mirror.R;
 import com.excean.mirror.databinding.ActivityCenterBinding;
@@ -47,8 +48,8 @@ public class CenterActivity extends TitleActivity {
         list.add(new ManagerItem(R.string.title_question, R.drawable.ic_question, v->startActivity(new Intent(CenterActivity.this,QuestionActivity.class))));
         list.add(new ManagerItem(R.string.title_feedback, R.drawable.ic_feedback, v -> startActivity(new Intent(CenterActivity.this, FeedbackActivity.class))));
         list.add(new ManagerItem(R.string.title_check_update, R.drawable.ic_check_update, v-> UpgradeOperation.getDefault().checkUpdate()));
-        list.add(new ManagerItem(R.string.title_privacy, R.drawable.ic_privacy, (v -> WebViewActivity.open(CenterActivity.this, "https://www.baidu.com"))));
-        list.add(new ManagerItem(R.string.title_protocol, R.drawable.ic_procotol, (v) -> startActivity(new Intent(CenterActivity.this, FeedbackActivity.class))));
+        list.add(new ManagerItem(R.string.title_privacy, R.drawable.ic_privacy, (v -> WebViewActivity.open(CenterActivity.this, AppHolder.PRIVACY))));
+        list.add(new ManagerItem(R.string.title_protocol, R.drawable.ic_procotol, (v ->WebViewActivity.open(CenterActivity.this, AppHolder.PROTOCOL))));
         list.add(new ManagerItem(R.string.title_about_us, R.drawable.ic_about_us, (v) -> startActivity(new Intent(CenterActivity.this, AboutActivity.class))));
         return list;
     }
