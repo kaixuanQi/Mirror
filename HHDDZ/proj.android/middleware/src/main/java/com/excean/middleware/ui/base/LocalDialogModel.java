@@ -207,7 +207,7 @@ public class LocalDialogModel extends DialogModel {
             return this;
         }
 
-        public Builder content(int content, Object[] args) {
+        public Builder content(int content, Object... args) {
             this.content = content;
             this.args = args;
             return this;

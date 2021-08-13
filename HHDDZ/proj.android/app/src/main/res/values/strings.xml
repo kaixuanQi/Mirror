@@ -7,6 +7,10 @@
 
        </string>
     <string name="dialog_privacy_negative">不同意并退出</string>
+    <string name="dialog_permission_positive">同意授权</string>
+    <string name="dialog_permission_settings_positive">去授权</string>
+    <string name="dialog_permission_install_content">部分手机需要授权“允许安装应用”的权限，若不授权将导致制作失败。</string>
+
     <string name="dialog_privacy_positive">同意</string>
     <string name="dialog_error_disable_cell_data">当前您正在使用非WiFi网络环境，是否允许使用流量下载？</string>
     <string name="dialog_error_storage">您的手机存储空间不足，请尝试清理手机存储空间后再下载。</string>
@@ -77,6 +81,7 @@
 
     <string name="dialog_download_package">安装包: %1$s</string>
     <string name="dialog_download_hint">应用分身版%1$s 正在下载中，请勿退出</string>
+    <string name="dialog_missing_mirror_content">您尚未在本机安装%1$s应用，无法启动分身，请安装后再尝试启动</string>
 
     <string-array name="feedback_question_type">
         <item>闪退或卡顿</item>

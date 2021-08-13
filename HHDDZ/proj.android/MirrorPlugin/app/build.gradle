@@ -19,7 +19,8 @@ android {
                 'MIRROR_PACKAGE':rootProject.ext.mirrorPackage,
                 'MIRROR_USER':rootProject.ext.mirrorUser,
                 'MIRROR_ATTRIBUTE':rootProject.ext.mirrorAttribute,
-                'masterPkg':applicationId
+                'MIRROR_OBB':rootProject.ext.mirrorObb,
+                'masterPkg':"com.yyong.fshen"
         ]
 //        ndk {
 //            setAbiFilters(["arm64-v8a"])

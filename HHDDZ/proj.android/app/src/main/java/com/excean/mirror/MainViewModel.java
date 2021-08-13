@@ -37,9 +37,6 @@ public class MainViewModel extends DataViewModel<String, List<MirrorPackage>> {
         event.observe(this, new androidx.lifecycle.Observer<Intent>() {
             @Override
             public void onChanged(Intent intent) {
-//                Bundle bundle = intent.getExtras();
-//                bundle.size();
-//                Log.e("test", "onChanged: " + intent + " " + bundle);
                 if (AppHolder.userGuide.getValue()) {
                     notifyDataSetChanged(null);
                 }
@@ -64,10 +61,9 @@ public class MainViewModel extends DataViewModel<String, List<MirrorPackage>> {
                     }
                 } else if (TextUtils.equals(action, Intent.ACTION_PACKAGE_ADDED)) {
                     if (!intent.getBooleanExtra(Intent.EXTRA_REPLACING, false)) {
-                        BIHelper.reportPackageChanged(pkg, "added",0);
+                        BIHelper.reportPackageChanged(pkg, "added", 0);
                     }
                 }
-
             }
         });
 
@@ -80,9 +76,9 @@ public class MainViewModel extends DataViewModel<String, List<MirrorPackage>> {
                             .clickInterceptor(new LocalDialogModel.ClickInterceptor() {
                                 @Override
                                 public String intercept(String url) {
-                                    if (TextUtils.equals("redirect://protocol",url)){
+                                    if (TextUtils.equals("redirect://protocol", url)) {
                                         return "https://www.baidu.com";
-                                    }else if (TextUtils.equals("redirect://privacy",url)){
+                                    } else if (TextUtils.equals("redirect://privacy", url)) {
                                         return "https://www.baidu.com";
                                     }
                                     return url;
@@ -162,7 +158,7 @@ public class MainViewModel extends DataViewModel<String, List<MirrorPackage>> {
         PackageManager manager = app.getPackageManager();
 
         List<PackageInfo> packages = manager.getInstalledPackages(PackageManager.GET_META_DATA);
-
+        List<String> names = new ArrayList<>();
         for (PackageInfo pkg : packages) {
             if (!pkg.packageName.endsWith("mirror0")) {
                 continue;
@@ -172,7 +168,9 @@ public class MainViewModel extends DataViewModel<String, List<MirrorPackage>> {
                 continue;
             }
             list.add(new MirrorPackage(pkg, pkg.applicationInfo.loadLabel(manager).toString()));
+            names.add(pkg.packageName);
         }
+        AppHolder.fetchVirtualAttributes(names);
         return Response.success(list);
     }
 

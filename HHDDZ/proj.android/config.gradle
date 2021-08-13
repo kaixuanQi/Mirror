@@ -1,9 +1,9 @@
 
 ext {
     buildToolVersion = "30.0.3"
-    compileVersion = 30
+    compileVersion = 29
     minSdkVersion = 19
-    targetSdkVersion = 30
+    targetSdkVersion = 29
     pkg = "com.yyong.fshen"
     mainChId = "32022"
     subChId = "1"
@@ -14,6 +14,8 @@ ext {
     mirrorUser = 'mirror.user.holder'
     mirrorAttribute= 'mirror.attribute.holder'
     mirrorService = 'mirror.service.holder'
+    mirrorLabel = 'mirror.label.holder'
+    mirrorObb = 'mirror.obb.holder'
     macro = [
             //#LogUtil输出,缺省输出log
             BUILD_LOG_SWITCH: false,

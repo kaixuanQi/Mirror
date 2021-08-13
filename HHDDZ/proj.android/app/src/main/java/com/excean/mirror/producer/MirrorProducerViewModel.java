@@ -1,11 +1,13 @@
 package com.excean.mirror.producer;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 
@@ -13,6 +15,7 @@ import androidx.databinding.ObservableBoolean;
 
 import com.bumptech.glide.Glide;
 import com.excean.middleware.api.Api;
+import com.excean.middleware.ui.base.LocalDialogModel;
 import com.excean.mirror.AppHolder;
 import com.excean.mirror.BIHelper;
 import com.excean.mirror.R;
@@ -23,6 +26,11 @@ import com.zero.support.common.AppGlobal;
 import com.zero.support.common.component.ActivityResultEvent;
 import com.zero.support.common.component.ActivityResultModel;
 import com.zero.support.common.component.DataViewModel;
+import com.zero.support.common.component.DialogClickEvent;
+import com.zero.support.common.component.DialogModel;
+import com.zero.support.common.component.PermissionEvent;
+import com.zero.support.common.component.PermissionHelper;
+import com.zero.support.common.component.PermissionModel;
 import com.zero.support.common.vo.Resource;
 import com.zero.support.work.Observer;
 import com.zero.support.work.Response;
@@ -39,6 +47,7 @@ public class MirrorProducerViewModel extends DataViewModel<PackageInfo, Producer
     private final ObservableBoolean prepare = new ObservableBoolean();
     private final ObservableBoolean error = new ObservableBoolean();
     private boolean replace;
+    private boolean denied;
 
     @Override
     protected void onViewModelCreated() {
@@ -53,7 +62,7 @@ public class MirrorProducerViewModel extends DataViewModel<PackageInfo, Producer
             replace = activity.getIntent().getBooleanExtra("replace", false);
             version = activity.getString(R.string.about_version_name, mirror.versionName);
             name = mirror.applicationInfo.loadLabel(activity.getPackageManager()).toString();
-            notifyDataSetChanged(mirror);
+            requestStorage();
         }
     }
 
@@ -93,6 +102,91 @@ public class MirrorProducerViewModel extends DataViewModel<PackageInfo, Producer
         }
     }
 
+    private void requestStorage() {
+        if (!PermissionHelper.hasPermissions(AppGlobal.getApplication(), Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            requestDialog(new LocalDialogModel.Builder()
+                    .positive(denied ? R.string.dialog_permission_settings_positive : R.string.dialog_permission_positive)
+                    .negative(R.string.dialog_install_negative)
+                    .content("需要授权访问“存储权限”，否则将导致应用资料缺失，分身无法正常运行。")
+                    .build()).click().observe(new Observer<DialogClickEvent>() {
+                @Override
+                public void onChanged(DialogClickEvent event) {
+                    if (event.isPositive()) {
+                        if (denied) {
+                            Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).setData(Uri.fromParts("package", requireActivity().getPackageName(), null));
+                            requestActivityResult(new ActivityResultModel(intent)).result().observe(new Observer<ActivityResultEvent>() {
+                                @Override
+                                public void onChanged(ActivityResultEvent event) {
+                                    requestStorage();
+                                }
+                            });
+                        } else {
+                            requestPermission(new PermissionModel(Manifest.permission.READ_EXTERNAL_STORAGE)).result().observe(new Observer<PermissionEvent>() {
+                                @Override
+                                public void onChanged(PermissionEvent event) {
+                                    if (event.isGranted()) {
+                                        requestInstallWrapper();
+                                    } else if (event.isPermanentlyDenied()) {
+                                        denied = true;
+                                        requestStorage();
+                                    }else {
+                                        requestStorage();
+                                    }
+                                }
+                            });
+                        }
+                        event.dismiss();
+                    } else {
+                        event.dismiss();
+                        requireActivity().finish();
+                    }
+                }
+            });
+        } else {
+            requestInstallWrapper();
+        }
+
+    }
+
+    private void requestInstallWrapper() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            if (getApplication().getPackageManager().canRequestPackageInstalls()) {
+                notifyDataSetChanged(mirror);
+            } else {
+                DialogModel model = new LocalDialogModel.Builder()
+                        .content(R.string.dialog_permission_install_content)
+                        .positive(R.string.dialog_permission_positive)
+                        .negative(R.string.dialog_install_negative)
+                        .build();
+                model.click().observe(new Observer<DialogClickEvent>() {
+                    @Override
+                    public void onChanged(DialogClickEvent event) {
+                        if (event.isPositive()) {
+                            Uri packageURI = Uri.parse("package:" + getApplication().getPackageName());
+                            Intent intent = new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES, packageURI);
+                            requestActivityResult(new ActivityResultModel(intent)).result().observe(new Observer<ActivityResultEvent>() {
+                                @Override
+                                public void onChanged(ActivityResultEvent event) {
+                                    if (getApplication().getPackageManager().canRequestPackageInstalls()) {
+                                        model.dismiss();
+                                        notifyDataSetChanged(mirror);
+                                    }
+                                }
+                            });
+                        } else {
+                            requireActivity().finish();
+                            event.dismiss();
+                        }
+
+                    }
+                });
+                requestDialog(model);
+            }
+        } else {
+            notifyDataSetChanged(mirror);
+        }
+    }
+
     private void requestInstall(Resource<Producer> resource) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
@@ -106,7 +200,6 @@ public class MirrorProducerViewModel extends DataViewModel<PackageInfo, Producer
         requestActivityResult(new ActivityResultModel(intent)).result().observe(new Observer<ActivityResultEvent>() {
             @Override
             public void onChanged(ActivityResultEvent event) {
-                Log.e("install", "onChanged: " + event);
                 if (replace) {
                     requireActivity().setResult(event.resultCode());
                     requireActivity().finish();
@@ -158,7 +251,11 @@ public class MirrorProducerViewModel extends DataViewModel<PackageInfo, Producer
         String title = info.applicationInfo.loadLabel(manager).toString();
 
         Producer producer = ProducerManager.getDefault().getProducer(info.packageName);
-        producer.produce(icon, title + "分身", 0, getAbiName());
+        String obbDir = AppGlobal.getApplication().getObbDir().getAbsolutePath();
+        obbDir = obbDir.replace(AppGlobal.getApplication().getPackageName(),info.packageName);
+        File file = new File(obbDir,"main."+info.versionCode+"."+info.packageName+".obb");
+        boolean hasObb = file.exists();
+        producer.produce(icon, title + "分身", title, 0, getAbiName(),hasObb);
         return Response.success(producer);
     }
 

@@ -24,7 +24,7 @@ public class SingleDialog extends CommonDialog {
     DialogSingleBinding binding;
 
     public SingleDialog(@NonNull Context context) {
-        super(context, R.style.Theme_AppCompat_Dialog);
+        super(context);
     }
 
     @Override
@@ -44,7 +44,7 @@ public class SingleDialog extends CommonDialog {
 
     @Override
     protected void onBindDialogModel(DialogModel model) {
-        if (model instanceof LocalDialogModel) {
+        if (model instanceof SingleDialogModel) {
             binding.setData((SingleDialogModel) model);
             binding.content.setMovementMethod(LinkMovementMethod.getInstance());
         }

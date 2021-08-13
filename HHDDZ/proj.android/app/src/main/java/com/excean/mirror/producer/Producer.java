@@ -10,6 +10,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Enumeration;
+import java.util.zip.CRC32;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
@@ -37,18 +38,18 @@ public class Producer {
         return targetPackageName;
     }
 
-    public void produce(File icon, String title, int userId, String abiName) throws IOException {
+    public void produce(File icon, String title, String originTitle, int userId, String abiName, boolean hasObb) throws IOException {
         this.targetPackageName = packageName + ".mirror" + userId;
         FileUtils.extractAsset(AppGlobal.getApplication(), "resource.apk", material);
         FileUtils.extractAsset(AppGlobal.getApplication(), "target.bks", keystore);
-        generateSource(packageName, icon, title, userId, abiName);
+        generateSource(packageName, icon, title, originTitle, userId, abiName,hasObb);
         FileUtils.deleteQuietly(material);
         MirrorHelper.sign(keystore, src, out);
         FileUtils.deleteQuietly(keystore);
         FileUtils.deleteQuietly(src);
     }
 
-    private void generateSource(String packageName, File icon, String title, int userId, String abiName) throws IOException {
+    private void generateSource(String packageName, File icon, String title, String originTitle, int userId, String abiName, boolean hasObb) throws IOException {
         ZipFile materialZip = new ZipFile(material);
         Enumeration<ZipEntry> enumeration = (Enumeration<ZipEntry>) materialZip.entries();
         FileOutputStream source = new FileOutputStream(src);
@@ -65,13 +66,29 @@ public class Producer {
             }
             InputStream is = materialZip.getInputStream(entry);
             if (name.equals("AndroidManifest.xml")) {
-                outEntry = new ZipEntry(entry.getName());
-                sourceZip.putNextEntry(outEntry);
-                MirrorHelper.fixManifest(is, packageName, userId, sourceZip);
-            } else if (name.equals("resources.arsc")) {
+                byte[] bytes = MirrorHelper.fixManifest(is, packageName,hasObb, userId);
                 outEntry = new ZipEntry(name);
+                outEntry.setMethod(ZipEntry.STORED);
+                outEntry.setCompressedSize(bytes.length);
+                outEntry.setSize(bytes.length);
+                CRC32 crc32 = new CRC32();
+                crc32.update(bytes);
+                outEntry.setCrc(crc32.getValue());
                 sourceZip.putNextEntry(outEntry);
-                MirrorHelper.fixResource(is, title, sourceZip);
+                sourceZip.write(bytes);
+                sourceZip.closeEntry();
+            } else if (name.equals("resources.arsc")) {
+                byte[] bytes = MirrorHelper.fixResource(is, title, originTitle);
+                outEntry = new ZipEntry(name);
+                outEntry.setMethod(ZipEntry.STORED);
+                outEntry.setCompressedSize(bytes.length);
+                outEntry.setSize(bytes.length);
+                CRC32 crc32 = new CRC32();
+                crc32.update(bytes);
+                outEntry.setCrc(crc32.getValue());
+                sourceZip.putNextEntry(outEntry);
+                sourceZip.write(bytes);
+                sourceZip.closeEntry();
             } else if (name.equals("res/D2.png")) {
                 outEntry = new ZipEntry(name);
                 FileInputStream iconStream = new FileInputStream(icon);

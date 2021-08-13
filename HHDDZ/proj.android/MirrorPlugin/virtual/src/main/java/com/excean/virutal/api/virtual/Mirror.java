@@ -3,24 +3,28 @@ package com.excean.virutal.api.virtual;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class Mirror {
+
     public int userId;
     public String name;
     public String mirrorPackageName = "";
     public String servicePackageName;
+    public String mirrorName;
     public long attribute;
+    public boolean obb;
     public static final String KEY_SERVICE = "mirror.service";
     public static final String KEY_USER = "mirror.user";
     public static final String KEY_PACKAGE = "mirror.package";
 
     public static final String KEY_ATTRIBUTE = "mirror.attribute";
-
+    public static final String KEY_OBB = "mirror.obb";
+    public static final String KEY_LABEL = "mirror.label";
     private static final Map<String, Mirror> mirrors = new LinkedHashMap<>();
     private PackageInfo packageInfo;
     /**
@@ -58,6 +62,8 @@ public class Mirror {
             this.userId = Integer.parseInt(String.valueOf(bundle.get(KEY_USER)));
             this.mirrorPackageName = String.valueOf(bundle.get(KEY_PACKAGE));
             this.attribute = Long.parseLong(String.valueOf(bundle.get(KEY_ATTRIBUTE)));
+            this.obb = Boolean.parseBoolean(String.valueOf(bundle.get(KEY_OBB)));
+            this.mirrorName = String.valueOf(bundle.get(KEY_LABEL));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -65,6 +71,7 @@ public class Mirror {
             mirrorPackageInfo = pm.getPackageInfo(mirrorPackageName, PackageManager.GET_META_DATA);
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
+            Log.d("mirror", "Mirror error: " + e.getMessage());
         }
     }
 

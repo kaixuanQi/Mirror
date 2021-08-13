@@ -8,6 +8,7 @@ import androidx.databinding.ObservableField;
 
 import com.excean.middleware.api.Api;
 import com.excean.middleware.ui.base.LocalDialogModel;
+import com.excean.middleware.ui.base.SingleDialogModel;
 import com.excean.mirror.R;
 import com.excean.mirror.api.ApiService;
 import com.excean.mirror.api.Feedback;
@@ -82,7 +83,7 @@ public class FeedbackViewModel extends DataViewModel<Feedback, String> {
             postDismiss();
         }
         if (resource.isSuccess()) {
-            requestDialog(new LocalDialogModel.Builder()
+            requestDialog(new SingleDialogModel.Builder()
                     .title(R.string.feedback_submit_dialog_title)
                     .content(R.string.feedback_submit_dialog_content)
                     .build()).click().observe(new Observer<DialogClickEvent>() {

@@ -47,6 +47,7 @@ public class VirtualOperatorNative implements VirtualOperator {
         if (mirror.getMirrorPackageInfo() == null) {
             //应用被卸载
             Log.e("mirror", "startPlugin: " + mirror.getMirrorPackageName());
+            callback.onLaunch(-100);
             return;
         }
         if (packageInfo == null || !TextUtils.equals(packageInfo.applicationInfo.publicSourceDir, mirror.getMirrorPackageInfo().applicationInfo.publicSourceDir)) {

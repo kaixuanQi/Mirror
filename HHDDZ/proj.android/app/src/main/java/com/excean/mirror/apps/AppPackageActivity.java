@@ -46,7 +46,7 @@ public class AppPackageActivity extends TitleActivity {
                     MirrorActivity.startActivity(AppPackageActivity.this, info.getMirrorPackageInfo(), BIHelper.LAUNCH_MANAGER);
                 } else {
                     BIHelper.reportRequestProduce(info.getPackageInfo().packageName);
-                    MirrorProducerActivity.startActivity(AppPackageActivity.this, info.getPackageInfo(), true);
+                    MirrorProducerActivity.startActivity(AppPackageActivity.this, info.getPackageInfo(), false);
                     finish();
                 }
             }

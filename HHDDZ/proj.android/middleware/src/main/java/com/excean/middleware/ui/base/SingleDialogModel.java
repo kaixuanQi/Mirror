@@ -74,7 +74,7 @@ public class SingleDialogModel extends DialogModel {
 
     @Override
     protected CommonDialog onCreateDialog(CommonActivity activity) {
-        return new BaseDialog(activity);
+        return new SingleDialog(activity);
     }
 
     public String getNegative() {

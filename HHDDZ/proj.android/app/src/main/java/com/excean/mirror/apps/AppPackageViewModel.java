@@ -1,14 +1,21 @@
 package com.excean.mirror.apps;
 
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.provider.Settings;
 
 import androidx.databinding.ObservableBoolean;
 
+import com.excean.middleware.ui.base.LocalDialogModel;
+import com.excean.mirror.R;
 import com.excean.mirror.apps.vo.LetterCell;
 import com.excean.mirror.vo.MirrorPackage;
 import com.zero.support.common.AppGlobal;
+import com.zero.support.common.component.ActivityResultEvent;
+import com.zero.support.common.component.ActivityResultModel;
 import com.zero.support.common.component.DataViewModel;
 import com.zero.support.common.vo.Resource;
 import com.zero.support.common.widget.SlideBar;
@@ -53,7 +60,30 @@ public class AppPackageViewModel extends DataViewModel<String, List<Cell>> {
     protected void onResourceChanged(Resource<List<Cell>> resource) {
         super.onResourceChanged(resource);
         if (resource.isSuccess()) {
-            prepared.set(true);
+            if (resource.isEmpty()) {
+                requestDialog(new LocalDialogModel.Builder()
+                        .content("尚未读取到应用信息，请求授权开启“读取应用列表”权限")
+                        .negative(R.string.dialog_install_negative)
+                        .positive(R.string.dialog_permission_positive)
+                        .build()).click().observe(event -> {
+                    if (event.isPositive()) {
+                        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                        intent.setData(Uri.parse("package:"+AppGlobal.getApplication().getPackageName()));
+                        requestActivityResult(new ActivityResultModel(intent)).result().observe(new com.zero.support.work.Observer<ActivityResultEvent>() {
+                            @Override
+                            public void onChanged(ActivityResultEvent event) {
+                                notifyDataSetChanged(null);
+                            }
+                        });
+                    } else {
+                        requireActivity().finish();
+                        event.dismiss();
+                    }
+                });
+            } else {
+                prepared.set(true);
+            }
+
         }
     }
 
@@ -62,7 +92,7 @@ public class AppPackageViewModel extends DataViewModel<String, List<Cell>> {
         PackageManager pm = AppGlobal.getApplication().getPackageManager();
         List<PackageInfo> list = pm.getInstalledPackages(PackageManager.GET_META_DATA);
         Map<String, List<MirrorPackage>> map = new HashMap<>(list.size());
-        Map<String,PackageInfo> set = new HashMap<>();
+        Map<String, PackageInfo> set = new HashMap<>();
         int size = 0;
         for (PackageInfo info : list) {
             if ((info.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0) {
@@ -71,8 +101,8 @@ public class AppPackageViewModel extends DataViewModel<String, List<Cell>> {
             if ((info.applicationInfo.flags & ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) != 0) {
                 continue;
             }
-            if (info.packageName.endsWith(".mirror0")){
-                set.put(info.packageName.replace(".mirror0",""),info);
+            if (info.packageName.endsWith(".mirror0")) {
+                set.put(info.packageName.replace(".mirror0", ""), info);
                 continue;
             }
             MirrorPackage mirrorPackage = new MirrorPackage(info, info.applicationInfo.loadLabel(pm).toString());
@@ -94,7 +124,7 @@ public class AppPackageViewModel extends DataViewModel<String, List<Cell>> {
             }
             cells.add(new LetterCell(letter));
             cells.addAll(packages);
-            for (MirrorPackage p :packages) {
+            for (MirrorPackage p : packages) {
                 p.setMirrorPackageInfo(set.get(p.getPackageInfo().packageName));
             }
         }

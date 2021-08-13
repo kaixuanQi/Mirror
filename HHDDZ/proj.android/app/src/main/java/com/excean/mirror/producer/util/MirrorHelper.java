@@ -10,7 +10,6 @@ import com.zero.support.common.AppGlobal;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.Collections;
@@ -26,13 +25,16 @@ public class MirrorHelper {
     public static final String NAME_HOLDER = "mirror.name.holder";
     public static final String ATTRIBUTE_HOLDER = "mirror.attribute.holder";
     public static final String SERVICE_HOLDER = "mirror.service.holder";
+    public static final String LABEL_HOLDER = "mirror.label.holder";
+    public static final String OBB_HOLDER = "mirror.obb.holder";
     /**
      * v2签名使用了 java 8的代码，不要打开
      */
     static String[] CMD = new String[]{"sign", "--ks=", "--ks-pass=pass:signer", "--ks-key-alias=signer", "--key-pass=pass:signer", "--in=", "--out=", "--ks-type=bks", "--v2-signing-enabled=false", "--v3-signing-enabled=false"};
     static String[] CMD2 = new String[]{"sign", "--ks=", "--ks-pass=pass:gkh5izzs2tqoa5z", "--ks-key-alias=yessc61z1", "--key-pass=pass:gkh5izzs2tqoa5z", "--in=", "--out=", "--ks-type=bks", "--v2-signing-enabled=false", "--v3-signing-enabled=false"};
+    static String[] CMD3 = new String[]{"sign", "--ks=", "--ks-pass=pass:lupp845a5dmfi50", "--ks-key-alias=lp0d0qge4", "--key-pass=pass:lupp845a5dmfi50", "--in=", "--out=", "--ks-type=bks", "--v2-signing-enabled=true", "--v3-signing-enabled=false"};
 
-    public static void fixManifest(InputStream stream, String packageName, int userId, OutputStream out) throws IOException {
+    public static byte[] fixManifest(InputStream stream, String packageName, boolean hasObb, int userId) throws IOException {
         XMLDecoder decoder = new XMLDecoder(ByteBuffer.wrap(DataUtil.toBytes(stream)).order(ByteOrder.LITTLE_ENDIAN));
         decoder.readStringBlock();
         String prefix = MIRROR_HOLDER + ":";
@@ -49,16 +51,21 @@ public class MirrorHelper {
         map.put(MIRROR_HOLDER, newPackage);
         map.put(ATTRIBUTE_HOLDER, String.valueOf(AppHolder.getVirtualAttribute(packageName)));
         map.put(SERVICE_HOLDER, AppGlobal.getApplication().getPackageName());
+        map.put(OBB_HOLDER, String.valueOf(hasObb));
         ByteBuffer byteBuffer = (ByteBuffer) decoder.write(map);
         byteBuffer.position(0);
-        out.write(byteBuffer.array());
+        return byteBuffer.array();
     }
 
-    public static void fixResource(InputStream inputStream, String title, OutputStream outputStream) throws IOException {
+    public static byte[] fixResource(InputStream inputStream, String title,String name) throws IOException {
         ARSCDecoder decoder = new ARSCDecoder(ByteBuffer.wrap(DataUtil.toBytes(inputStream)).order(ByteOrder.LITTLE_ENDIAN));
         decoder.readStringBlock();
-        ByteBuffer byteBuffer = decoder.write(Collections.singletonMap(NAME_HOLDER, title));
-        outputStream.write(byteBuffer.array());
+        Map<String, String> map = new HashMap<>();
+        map.put(LABEL_HOLDER, name);
+        map.put(NAME_HOLDER, title);
+        ByteBuffer byteBuffer = decoder.write(map);
+        byteBuffer.position(0);
+        return byteBuffer.array();
     }
 
     public static boolean sign(File key, File src, File output) {

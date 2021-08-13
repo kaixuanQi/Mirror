@@ -26,6 +26,15 @@
         <meta-data
             android:name="mirror.attribute"
             android:value="${MIRROR_ATTRIBUTE}" />
+
+        <meta-data
+            android:name="mirror.label"
+            android:value="@string/mirror_name" />
+
+        <meta-data
+            android:name="mirror.obb"
+            android:value="${MIRROR_OBB}" />
+
         <activity
             android:name="com.excean.mirror.plugin.MainActivity"
             android:excludeFromRecents="true"
