@@ -68,7 +68,7 @@ public class AppPackageViewModel extends DataViewModel<String, List<Cell>> {
                         .build()).click().observe(event -> {
                     if (event.isPositive()) {
                         Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                        intent.setData(Uri.parse("package:"+AppGlobal.getApplication().getPackageName()));
+                        intent.setData(Uri.parse("package:" + AppGlobal.getApplication().getPackageName()));
                         requestActivityResult(new ActivityResultModel(intent)).result().observe(new com.zero.support.work.Observer<ActivityResultEvent>() {
                             @Override
                             public void onChanged(ActivityResultEvent event) {
@@ -103,6 +103,9 @@ public class AppPackageViewModel extends DataViewModel<String, List<Cell>> {
             }
             if (info.packageName.endsWith(".mirror0")) {
                 set.put(info.packageName.replace(".mirror0", ""), info);
+                continue;
+            }
+            if (info.packageName.equals(AppGlobal.getApplication().getPackageName())) {
                 continue;
             }
             MirrorPackage mirrorPackage = new MirrorPackage(info, info.applicationInfo.loadLabel(pm).toString());
