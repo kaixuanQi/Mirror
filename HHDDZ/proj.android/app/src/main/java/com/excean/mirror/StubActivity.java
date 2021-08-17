@@ -35,7 +35,6 @@ public class StubActivity extends CommonActivity {
                 paths = new String[]{"tencent","Tencent"};
             }
             operator.startPlugin(flag, paths, result -> {
-                operator.finishSplashActivity();
                 if (result >= 0) {
                     BIHelper.reportLaunchFinish(getMirrorPackage(), getLaunchFrom(), result);
                 } else if (result == -100) {
