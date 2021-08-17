@@ -75,29 +75,32 @@ public class VirtualOperatorNative implements VirtualOperator {
             Log.e("mirror", "startPlugin: " + mirror.getMirrorPackageName() + " with " + attribute);
             PluginManagerWrapper.getInstance().updatePackageCapFlag(mirror.userId, mirror.mirrorPackageName, attribute, false);
         }
-        ConditionVariable variable = new ConditionVariable();
-        UIWrapperProvider.setBlockLock(mirror.mirrorPackageName, variable);
+        Log.e("mirror", "startPlugin: begain start");
+        ActivityManager.RunningAppProcessInfo processInfo = isRunning(mirror.mirrorPackageName);
         int ret = PluginManagerWrapper.getInstance().startActivity(mirror.userId, intent);
-        if (ret >= 0 && !isRunning(mirror.mirrorPackageName)) {
-            variable.block(60 * 1000);
+        if (ret >= 0 && processInfo==null) {
+            Log.e("mirror", "startPlugin: wating start");
+            UIWrapperProvider.obtainLock(mirror.mirrorPackageName).block(60 * 1000);
             Log.e("mirror", "startPlugin: success");
+        }else {
+            Log.e("mirror","wechat is running "+ret+"  "+processInfo.processName+"  "+processInfo.pid+" "+Arrays.toString(processInfo.pkgList)+" "+processInfo.uid);
         }
         if (callback != null) {
             callback.onLaunch(ret);
         }
     }
 
-    private boolean isRunning(String processName) {
+    private ActivityManager.RunningAppProcessInfo isRunning(String processName) {
         List<ActivityManager.RunningAppProcessInfo> list = PluginManagerWrapper.getInstance().getRunningAppProcesses(mirror.userId);
         if (list == null) {
-            return false;
+            return null;
         }
         for (ActivityManager.RunningAppProcessInfo processInfo : list) {
             if (TextUtils.equals(processInfo.processName, processName)) {
-                return true;
+                return processInfo;
             }
         }
-        return false;
+        return null;
     }
 
 

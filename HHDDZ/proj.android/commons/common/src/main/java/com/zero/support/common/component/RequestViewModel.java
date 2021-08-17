@@ -39,7 +39,7 @@ public class RequestViewModel extends CommonViewModel {
     void removeDialogModel(DialogModel model) {
         model.detach();
         if (!model.isEnableCached()){
-            CommonActivity activity = requireActivity();
+            CommonActivity activity = getActivity();
             if (activity!=null){
                 activity.requestRemoveDialog(model);
             }

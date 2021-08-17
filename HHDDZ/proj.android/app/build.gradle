@@ -26,6 +26,9 @@ android{
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
+    lintOptions {
+        abortOnError false
+    }
     signingConfigs {
         main {
             keyAlias keystoreProperties['key.alias']

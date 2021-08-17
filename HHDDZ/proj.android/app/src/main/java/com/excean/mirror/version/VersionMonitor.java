@@ -114,7 +114,6 @@ public class VersionMonitor implements Application.ActivityLifecycleCallbacks {
     public static void inject(Class<?>... activity) {
         AppGlobal.getApplication().registerActivityLifecycleCallbacks(INSTANCE);
         INSTANCE.ignores.addAll(Arrays.asList(activity));
-        INSTANCE.operation.checkUpdate();
     }
 
     private final androidx.lifecycle.Observer<DialogModel> observer = new androidx.lifecycle.Observer<DialogModel>() {
@@ -142,6 +141,9 @@ public class VersionMonitor implements Application.ActivityLifecycleCallbacks {
                 if (dialogModel == null) {
                     return;
                 }
+                if (dialogModel.requireDialog()!=null){
+                    dialogModel.dismiss();
+                }
                 RequestViewModel viewModel = ActivityManager.getFirstRequestViewModel();
                 if (viewModel != null) {
                     viewModel.requestDialog(dialogModel);
@@ -154,6 +156,7 @@ public class VersionMonitor implements Application.ActivityLifecycleCallbacks {
         DialogModel model = new LocalDialogModel.Builder()
                 .title(R.string.dialog_version_title)
                 .content(versionInfo.content)
+                .html(false)
                 .icon(R.drawable.ic_logo_update)
                 .build();
         model.click().observe(new Observer<DialogClickEvent>() {
@@ -177,7 +180,7 @@ public class VersionMonitor implements Application.ActivityLifecycleCallbacks {
     private DialogModel createCellDataDialog(VersionInfo versionInfo) {
         DialogModel model = new LocalDialogModel.Builder()
                 .name("dialog_cell_data")
-                .title(R.string.dialog_version_title)
+                .title(R.string.dialog_title)
                 .content(R.string.dialog_error_disable_cell_data)
                 .positive(R.string.dialog_error_disable_cell_data_positive)
                 .negative(R.string.dialog_install_negative)

@@ -44,9 +44,14 @@ public class UIWrapperProvider extends ContentProvider {
     private long lastHandleTime = 0;
     public static final Map<String, ConditionVariable> locks = new HashMap<>();
 
-    public static void setBlockLock(String pkg, ConditionVariable variable) {
-        synchronized (locks) {
-            locks.put(pkg, variable);
+    public static ConditionVariable obtainLock(String pkg){
+        synchronized (locks){
+            ConditionVariable variable = locks.get(pkg);
+            if (variable==null){
+                variable = new ConditionVariable();
+                locks.put(pkg,variable);
+            }
+            return variable;
         }
     }
 
@@ -73,11 +78,9 @@ public class UIWrapperProvider extends ContentProvider {
                     }
                 }
                 if (packageName != null) {
-                    ConditionVariable variable = locks.get(packageName);
-                    if (variable!=null){
-                        variable.open();
-                    }
-
+                    ConditionVariable variable =obtainLock(packageName);
+                    variable.open();
+                    Log.e("mirror", "call: launch"+" "+packageName );
                 }
 
             }

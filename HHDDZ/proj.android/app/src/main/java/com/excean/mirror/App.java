@@ -21,7 +21,7 @@ public class App extends MultiDexApplication {
         AppHolder.userGuide.observe(agree -> {
             if (agree){
                 BIHelper.initialize(App.this);
-                VersionMonitor.inject(SplashActivity.class);
+                VersionMonitor.inject(SplashActivity.class,StubActivity.class);
             }
         });
 

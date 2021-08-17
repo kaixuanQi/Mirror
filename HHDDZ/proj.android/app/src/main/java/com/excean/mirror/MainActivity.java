@@ -10,9 +10,9 @@ import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.excean.middleware.ui.base.BaseActivity;
-import com.excean.mirror.apps.AppPackageActivity;
 import com.excean.mirror.databinding.ActivityMainBinding;
 import com.excean.mirror.personal.CenterActivity;
+import com.excean.mirror.version.UpgradeOperation;
 import com.excean.mirror.vo.MirrorPackage;
 import com.zero.support.common.widget.recycler.CellAdapter;
 import com.zero.support.common.widget.recycler.ItemViewHolder;
@@ -24,6 +24,7 @@ public class MainActivity extends BaseActivity {
     ActivityMainBinding binding;
     CellAdapter adapter;
     MainViewModel viewModel;
+    private boolean clickBack = true;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,7 +46,7 @@ public class MainActivity extends BaseActivity {
         adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, ItemViewHolder holder) {
-                MirrorActivity.startActivity(MainActivity.this, holder.<MirrorPackage>getItem().getPackageInfo(),BIHelper.LAUNCH_MAIN);
+                MirrorActivity.startActivity(MainActivity.this, holder.<MirrorPackage>getItem().getPackageInfo(), BIHelper.LAUNCH_MAIN);
             }
         });
         binding.recyclerView.setAdapter(adapter);
@@ -81,7 +82,17 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        if (clickBack) {
+            clickBack = false;
+            UpgradeOperation.getDefault().checkUpdate();
+        }
+    }
+
+    @Override
     public void onBackPressed() {
+        clickBack = true;
         moveTaskToBack(false);
     }
 }

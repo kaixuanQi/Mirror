@@ -3,6 +3,7 @@ package com.excean.middleware.ui.base;
 import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.text.Html;
+import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
@@ -39,8 +40,10 @@ public class LocalDialogModel extends DialogModel {
     protected final String contentText;
     Observable<Integer> preferences;
     private ClickInterceptor interceptor;
+    private Builder builder;
     protected LocalDialogModel(Builder builder) {
         super(builder.name);
+        this.builder = builder;
         this.negative = builder.negative;
         this.positive = builder.positive;
         this.title = builder.title;
@@ -104,31 +107,33 @@ public class LocalDialogModel extends DialogModel {
         } else {
             text = requireViewModel().requireActivity().getString(content);
         }
-        try {
-            SpannableStringBuilder spanned = (SpannableStringBuilder) Html.fromHtml(text);
-            URLSpan[] urlSpans = spanned.getSpans(0, spanned.length(), URLSpan.class);
-            for (final URLSpan span : urlSpans) {
-                int start = spanned.getSpanStart(span);
-                int end = spanned.getSpanEnd(span);
-                int flag = spanned.getSpanFlags(span);
-                ClickableSpan clickableSpan = new URLSpan(span.getURL()) {
-                    @Override
-                    public void onClick(View widget) {
-                        String url = span.getURL();
-                        if (interceptor!=null){
-                            url = interceptor.intercept(url);
+        if (builder.html){
+            try {
+                SpannableStringBuilder spanned = (SpannableStringBuilder) Html.fromHtml(text);
+                URLSpan[] urlSpans = spanned.getSpans(0, spanned.length(), URLSpan.class);
+                for (final URLSpan span : urlSpans) {
+                    int start = spanned.getSpanStart(span);
+                    int end = spanned.getSpanEnd(span);
+                    int flag = spanned.getSpanFlags(span);
+                    ClickableSpan clickableSpan = new URLSpan(span.getURL()) {
+                        @Override
+                        public void onClick(View widget) {
+                            String url = span.getURL();
+                            if (interceptor!=null){
+                                url = interceptor.intercept(url);
+                            }
+                            LocalDialogModel.this.onClickSpan(widget,url);
                         }
-                        LocalDialogModel.this.onClickSpan(widget,url);
-                    }
-                };
-                spanned.removeSpan(span);
-                spanned.setSpan(clickableSpan, start, end, flag);
+                    };
+                    spanned.removeSpan(span);
+                    spanned.setSpan(clickableSpan, start, end, flag);
 
+                }
+                return spanned;
+
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            return spanned;
-
-        } catch (Exception e) {
-            e.printStackTrace();
         }
         return new SpannableString(text);
     }
@@ -171,6 +176,7 @@ public class LocalDialogModel extends DialogModel {
         private int times;
         private String name;
         private ClickInterceptor interceptor;
+        private boolean html = true;
 
         public Builder name(String name) {
             this.name = name;
@@ -194,6 +200,11 @@ public class LocalDialogModel extends DialogModel {
 
         public Builder positive(int positive) {
             this.positive = positive;
+            return this;
+        }
+
+        public Builder html(boolean html){
+            this.html = html;
             return this;
         }
 

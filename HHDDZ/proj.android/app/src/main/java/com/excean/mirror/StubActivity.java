@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.text.TextUtils;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 
@@ -35,6 +36,7 @@ public class StubActivity extends CommonActivity {
                 paths = new String[]{"tencent","Tencent"};
             }
             operator.startPlugin(flag, paths, result -> {
+                Log.d("mirror", "start ret: "+result );
                 if (result >= 0) {
                     BIHelper.reportLaunchFinish(getMirrorPackage(), getLaunchFrom(), result);
                 } else if (result == -100) {
@@ -42,6 +44,7 @@ public class StubActivity extends CommonActivity {
                     return;
                 }
                 AppExecutor.main().execute(this::finish);
+                AppExecutor.main().execute(operator::finishSplashActivity);
             });
 
         });

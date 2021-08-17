@@ -22,8 +22,9 @@ public class MainActivity extends Activity {
     private AlertDialog dialog;
     private AlertDialog sdcardDialog;
     private AlertDialog sourceDialog;
-    private int request_sdcard = 100;
-    private int request_source = 100;
+    private static final int request_sdcard = 101;
+    private static final int request_source = 102;
+    private static final int request_stub = 100;
     private boolean sdcardDenied;
 
     @Override
@@ -70,7 +71,7 @@ public class MainActivity extends Activity {
         bundle.putString("mirrorName",VirtualOperatorNative.INSTANCE.getMirror().mirrorName);
         intent.replaceExtras(bundle);
         try {
-            startActivityForResult(intent, 100);
+            startActivityForResult(intent, request_stub);
         } catch (Throwable e) {
             e.printStackTrace();
             obtainInstall().show();

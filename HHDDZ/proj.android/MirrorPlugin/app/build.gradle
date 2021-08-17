@@ -1,7 +1,7 @@
 plugins {
     id 'com.android.application'
 }
-def proguard = false
+def proguard = true
 android {
     buildToolsVersion rootProject.ext.buildToolVersion
     compileSdkVersion rootProject.ext.compileVersion
