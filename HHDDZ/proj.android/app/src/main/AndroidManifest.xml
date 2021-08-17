@@ -41,7 +41,7 @@
             android:name=".StubActivity"
             android:excludeFromRecents="true"
             android:exported="true"
-            android:theme="@style/Theme.Mirror.NoActionBar.FullScreen">
+            android:theme="@style/Theme.Mirror.Translucent">
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
                 <action android:name="com.excean.mirror.action.mirror" />

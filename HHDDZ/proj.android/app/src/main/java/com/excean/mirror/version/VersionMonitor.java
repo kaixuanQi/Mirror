@@ -141,9 +141,6 @@ public class VersionMonitor implements Application.ActivityLifecycleCallbacks {
                 if (dialogModel == null) {
                     return;
                 }
-                if (dialogModel.requireDialog()!=null){
-                    dialogModel.dismiss();
-                }
                 RequestViewModel viewModel = ActivityManager.getFirstRequestViewModel();
                 if (viewModel != null) {
                     viewModel.requestDialog(dialogModel);

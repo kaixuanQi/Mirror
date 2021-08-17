@@ -13,7 +13,9 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
     <style name="Theme.Mirror.Dialog" parent="Theme.AppCompat.Dialog" />
+
     <style name="Theme.Mirror.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
@@ -23,6 +25,17 @@
     <style name="Theme.Mirror.NoActionBar.FullScreen" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:statusBarColor" tools:targetApi="l">@color/white</item>
         <item name="colorPrimary">@color/purple_500</item>
+    </style>
+
+    <style name="Theme.Mirror.Translucent" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:statusBarColor" tools:targetApi="l">@color/white</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <!-- Note that we use the base animation style here (that is no
+             animations) because we really have no idea how this kind of
+             activity will be used. -->
+        <item name="android:windowAnimationStyle">@android:style/Animation</item>
     </style>
 
     <style name="Theme.Mirror.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
