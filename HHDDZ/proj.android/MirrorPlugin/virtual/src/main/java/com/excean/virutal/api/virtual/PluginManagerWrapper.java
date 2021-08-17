@@ -27,7 +27,15 @@ import java.util.Map;
 public class PluginManagerWrapper {
     private static final boolean DEBUG = true;
     private static final String TAG = PluginManagerWrapper.class.getSimpleName();
-    public static final String PROXY = "com.z2lt7.iir3smvyjak.q8qjf6y.ApplicationProxy";
+    public static String PROXY;
+
+    public static void setProguard(boolean proguard) {
+        if (proguard) {
+            PROXY = "com.z2lt7.iir3smvyjak.q8qjf6y.ApplicationProxy";
+        } else {
+            PROXY = "com.excelliance.kxqp.platform.ApplicationProxy";
+        }
+    }
 
     private Context mContext;
     private static PluginManagerWrapper sInstance = null;

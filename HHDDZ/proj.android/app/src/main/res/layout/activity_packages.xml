@@ -43,7 +43,7 @@
             android:textColor="#999999"
             android:textSize="12sp"
             android:visibility="@{viewModel.prepared?View.VISIBLE:View.GONE}"
-            app:slideBarFocusBackgroundColor="?colorAccent"
+            app:slideBarFocusBackgroundColor="?attr/colorAccent"
             app:slideBarFocusTextColor="@color/white" />
     </FrameLayout>
 </layout>

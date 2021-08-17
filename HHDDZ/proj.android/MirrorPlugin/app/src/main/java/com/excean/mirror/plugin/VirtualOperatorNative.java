@@ -1,10 +1,12 @@
 package com.excean.mirror.plugin;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.os.ConditionVariable;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -12,6 +14,9 @@ import com.excean.virutal.api.virtual.ActivityLaunchCallback;
 import com.excean.virutal.api.virtual.Mirror;
 import com.excean.virutal.api.virtual.PluginManagerWrapper;
 import com.excean.virutal.api.virtual.VirtualOperator;
+
+import java.util.Arrays;
+import java.util.List;
 
 @SuppressWarnings("all")
 public class VirtualOperatorNative implements VirtualOperator {
@@ -42,17 +47,25 @@ public class VirtualOperatorNative implements VirtualOperator {
 
 
     @Override
-    public void startPlugin(long attribute, ActivityLaunchCallback callback) {
+    public void startPlugin(long attribute, String[] paths, ActivityLaunchCallback callback) {
         PackageInfo packageInfo = PluginManagerWrapper.getInstance().getPackageInfo(mirror.getMirrorPackageName(), PackageManager.GET_META_DATA);
-        if (mirror.getMirrorPackageInfo() == null) {
+        if (mirror.getRemoteMirrorPackageInfo() == null) {
             //应用被卸载
             Log.e("mirror", "startPlugin: " + mirror.getMirrorPackageName());
             callback.onLaunch(-100);
             return;
         }
+        boolean firstInstall = packageInfo == null;
         if (packageInfo == null || !TextUtils.equals(packageInfo.applicationInfo.publicSourceDir, mirror.getMirrorPackageInfo().applicationInfo.publicSourceDir)) {
             int ret = PluginManagerWrapper.getInstance().installPackage(mirror.userId, mirror.mirrorPackageName, PluginManagerWrapper.INSTALL_ARG_IS_PKGNAME | PluginManagerWrapper.INSTALL_IGNORE_PERMISSION_REQ | PluginManagerWrapper.INSTALL_REPLACE_EXISTING);
             packageInfo = PluginManagerWrapper.getInstance().getPackageInfo(mirror.getMirrorPackageName(), PackageManager.GET_META_DATA);
+            if (paths != null) {
+                Log.e("mirror", "install plugin: " + mirror.getMirrorPackageName() + " with " + Arrays.toString(paths));
+                PluginManagerWrapper.getInstance().setExternalStorageRedirectPaths(mirror.userId, mirror.mirrorPackageName, paths);
+            }
+        }
+        if (firstInstall) {
+            PluginManagerWrapper.getInstance().fakeDeviceInfo(mirror.userId, PluginManagerWrapper.FAKE_MODE_FORCE_ALL);
         }
         Intent intent = new Intent(Intent.ACTION_MAIN);
         intent.setPackage(mirror.getMirrorPackageName());
@@ -62,13 +75,31 @@ public class VirtualOperatorNative implements VirtualOperator {
             Log.e("mirror", "startPlugin: " + mirror.getMirrorPackageName() + " with " + attribute);
             PluginManagerWrapper.getInstance().updatePackageCapFlag(mirror.userId, mirror.mirrorPackageName, attribute, false);
         }
-        PluginManagerWrapper.getInstance().preStartProcess(mirror.userId, mirror.getMirrorPackageName(), 0, intent);
-
+        ConditionVariable variable = new ConditionVariable();
+        UIWrapperProvider.setBlockLock(mirror.mirrorPackageName, variable);
         int ret = PluginManagerWrapper.getInstance().startActivity(mirror.userId, intent);
+        if (ret >= 0 && !isRunning(mirror.mirrorPackageName)) {
+            variable.block(60 * 1000);
+            Log.e("mirror", "startPlugin: success");
+        }
         if (callback != null) {
             callback.onLaunch(ret);
         }
     }
+
+    private boolean isRunning(String processName) {
+        List<ActivityManager.RunningAppProcessInfo> list = PluginManagerWrapper.getInstance().getRunningAppProcesses(mirror.userId);
+        if (list == null) {
+            return false;
+        }
+        for (ActivityManager.RunningAppProcessInfo processInfo : list) {
+            if (TextUtils.equals(processInfo.processName, processName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     @Override
     public void finishSplashActivity() {

@@ -31,6 +31,7 @@ public class Mirror {
      * 被分身应用
      */
     private PackageInfo mirrorPackageInfo;
+    private PackageManager pm;
 
     public static Mirror getMirror(Context context, String packageName) {
         synchronized (mirrors) {
@@ -52,6 +53,7 @@ public class Mirror {
      */
     public Mirror(PackageManager pm, String packageName) {
         try {
+            this.pm = pm;
             packageInfo = pm.getPackageInfo(packageName, PackageManager.GET_META_DATA);
             Bundle bundle = packageInfo.applicationInfo.metaData;
             if (bundle == null) {
@@ -80,6 +82,7 @@ public class Mirror {
      */
     public Mirror(PackageManager pm, PackageInfo info) {
         try {
+            this.pm = pm;
             packageInfo = info;
             this.name = String.valueOf(packageInfo.applicationInfo.loadLabel(pm));
             Bundle bundle = packageInfo.applicationInfo.metaData;
@@ -112,6 +115,15 @@ public class Mirror {
     }
 
     public PackageInfo getMirrorPackageInfo() {
+        return mirrorPackageInfo;
+    }
+
+    public PackageInfo getRemoteMirrorPackageInfo() {
+        try {
+            mirrorPackageInfo = pm.getPackageInfo(mirrorPackageName, PackageManager.GET_META_DATA);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return mirrorPackageInfo;
     }
 }

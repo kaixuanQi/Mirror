@@ -1,0 +1,17 @@
+<resources>
+    <style name="Theme.ActivityProxy" parent="@android:style/Theme.NoTitleBar">
+        <item name="android:taskOpenEnterAnimation">@null</item>
+        <item name="android:taskOpenExitAnimation">@null</item>
+        <item name="android:taskCloseEnterAnimation">@null</item>
+        <item name="android:taskCloseExitAnimation">@null</item>
+        <item name="android:windowDisablePreview">true</item>
+    </style>
+
+    <style name="Theme.ActivityProxyT" parent="@android:style/Theme.Translucent.NoTitleBar">
+    </style>
+
+    <style name="Theme.TrampolineActivity" parent="@android:style/Theme.Translucent.NoTitleBar">
+        <item name="android:windowAnimationStyle">@null</item>
+    </style>
+
+</resources>

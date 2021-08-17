@@ -1,7 +1,7 @@
 plugins {
     id 'com.android.application'
 }
-
+def proguard = false
 android {
     buildToolsVersion rootProject.ext.buildToolVersion
     compileSdkVersion rootProject.ext.compileVersion
@@ -22,6 +22,8 @@ android {
                 'MIRROR_OBB':rootProject.ext.mirrorObb,
                 'masterPkg':"com.yyong.fshen"
         ]
+        buildConfigField("boolean", "PROGUARD", proguard.toString())
+
 //        ndk {
 //            setAbiFilters(["arm64-v8a"])
 //        }
@@ -50,9 +52,14 @@ android {
 }
 
 dependencies {
-    implementation project(":MirrorPlugin:module")
+    if (proguard){
+        implementation project(":MirrorPlugin:module")
+        implementation project(":MirrorPlugin:special")
+    }else {
+        implementation project(":MirrorPlugin:fake:special")
+        implementation project(":MirrorPlugin:fake:module")
+    }
     implementation project(":MirrorPlugin:virtual")
-    implementation project(":MirrorPlugin:special")
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'

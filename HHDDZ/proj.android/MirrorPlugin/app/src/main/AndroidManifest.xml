@@ -44,6 +44,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <provider
+            android:name="com.excean.mirror.plugin.UIWrapperProvider"
+            android:authorities="${applicationId}:UIWrapperProvider"
+            android:exported="true"></provider>
     </application>
 
 </manifest>

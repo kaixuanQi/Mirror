@@ -73,7 +73,7 @@
                 android:onClick="@{(v)->data.dispatchClickEvent(v,DialogInterface.BUTTON_NEGATIVE)}"
                 android:text="@{data.negative}"
                 android:textAllCaps="false"
-                android:textColor="?colorPrimary"
+                android:textColor="?attr/colorPrimary"
                 android:textSize="14sp" />
 
             <TextView

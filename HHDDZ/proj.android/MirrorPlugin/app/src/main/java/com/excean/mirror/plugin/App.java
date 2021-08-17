@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.util.Log;
 
+import com.excean.mirror.plugin.holder.BuildConfig;
 import com.excean.virutal.api.virtual.Launcher;
 import com.excean.virutal.api.virtual.PluginManagerWrapper;
 import com.excean.virutal.api.virtual.SdkManager;
@@ -17,6 +18,7 @@ public class App extends Application {
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
+        PluginManagerWrapper.setProguard(BuildConfig.PROGUARD);
         Virtual.initialize(this);
         File sdkDir = new File(getCacheDir().getParentFile(), "sdk");
         SdkManager manager = SdkManager.initialize(this);

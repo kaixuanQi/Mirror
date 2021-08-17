@@ -5,11 +5,13 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.text.TextUtils;
 
 import androidx.annotation.Nullable;
 
 import com.excean.middleware.ui.base.LocalDialogModel;
 import com.excean.virtual.api.binder.Binder;
+import com.excean.virutal.api.virtual.PluginManagerWrapper;
 import com.excean.virutal.api.virtual.VirtualOperator;
 import com.zero.support.common.component.CommonActivity;
 import com.zero.support.common.component.DialogModel;
@@ -20,14 +22,21 @@ public class StubActivity extends CommonActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash);
+        setContentView(R.layout.activity_stub);
         setResult(Activity.RESULT_OK);
         IBinder binder = getIntent().getExtras().getBinder("operator");
         VirtualOperator operator = Binder.asInterface(binder, VirtualOperator.class);
         AppExecutor.async().execute(() -> {
-            operator.startPlugin(AppHolder.getVirtualAttribute(getMirrorPackage()), result -> {
+            String pkg = getMirrorPackage();
+            String[] paths = null;
+            long flag = AppHolder.getVirtualAttribute(getMirrorPackage());
+            if (TextUtils.equals(pkg, "com.tencent.mm")) {
+                flag |= PluginManagerWrapper.CAP_ISOLATE_SYSTEM_SETTINGS;
+                paths = new String[]{"tencent","Tencent"};
+            }
+            operator.startPlugin(flag, paths, result -> {
                 operator.finishSplashActivity();
-                if (result > 0) {
+                if (result >= 0) {
                     BIHelper.reportLaunchFinish(getMirrorPackage(), getLaunchFrom(), result);
                 } else if (result == -100) {
                     AppExecutor.main().execute(this::requestOpenMarket);

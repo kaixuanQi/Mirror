@@ -41,7 +41,7 @@ public class Producer {
     public void produce(File icon, String title, String originTitle, int userId, String abiName, boolean hasObb) throws IOException {
         this.targetPackageName = packageName + ".mirror" + userId;
         FileUtils.extractAsset(AppGlobal.getApplication(), "resource.apk", material);
-        FileUtils.extractAsset(AppGlobal.getApplication(), "target.bks", keystore);
+        FileUtils.extractAsset(AppGlobal.getApplication(), "test.bks", keystore);
         generateSource(packageName, icon, title, originTitle, userId, abiName,hasObb);
         FileUtils.deleteQuietly(material);
         MirrorHelper.sign(keystore, src, out);
@@ -89,7 +89,7 @@ public class Producer {
                 sourceZip.putNextEntry(outEntry);
                 sourceZip.write(bytes);
                 sourceZip.closeEntry();
-            } else if (name.equals("res/D2.png")) {
+            } else if (name.equals("res/D2.png")||name.equals("res/mipmap-xxhdpi-v4/ic_launcher.png")) {
                 outEntry = new ZipEntry(name);
                 FileInputStream iconStream = new FileInputStream(icon);
                 sourceZip.putNextEntry(outEntry);
