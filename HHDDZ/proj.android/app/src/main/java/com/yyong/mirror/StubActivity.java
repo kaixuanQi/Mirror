@@ -40,7 +40,7 @@ public class StubActivity extends CommonActivity {
                 if (result >= 0) {
                     BIHelper.reportLaunchFinish(getMirrorPackage(), getLaunchFrom(), result);
                 } else if (result == -100) {
-                    AppExecutor.main().execute(this::requestOpenMarket);
+                    AppExecutor.main().execute(() -> requestOpenMarket(operator));
                     return;
                 }
                 AppExecutor.main().execute(this::finish);
@@ -50,7 +50,7 @@ public class StubActivity extends CommonActivity {
         });
     }
 
-    private void requestOpenMarket() {
+    private void requestOpenMarket(VirtualOperator operator) {
         RequestViewModel viewModel = peekViewModel(RequestViewModel.class);
         DialogModel model = new LocalDialogModel.Builder().negative(R.string.dialog_install_negative)
                 .positive(R.string.dialog_install_positive)
@@ -62,6 +62,7 @@ public class StubActivity extends CommonActivity {
             }
             event.dismiss();
             finish();
+            operator.finishSplashActivity();
         });
 
     }
