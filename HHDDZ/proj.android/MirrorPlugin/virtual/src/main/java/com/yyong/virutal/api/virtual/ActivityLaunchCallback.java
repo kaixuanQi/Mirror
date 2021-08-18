@@ -5,5 +5,5 @@ import com.yyong.virtual.api.binder.BinderName;
 @BinderName("ActivityLaunchCallback")
 public interface ActivityLaunchCallback {
     @BinderName("onLaunch")
-    void onLaunch(int result);
+    void onLaunch(String packageName, int from, int result);
 }

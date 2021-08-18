@@ -12,42 +12,58 @@ import androidx.annotation.Nullable;
 
 import com.yyong.middleware.ui.base.LocalDialogModel;
 import com.yyong.virtual.api.binder.Binder;
+import com.yyong.virutal.api.virtual.ActivityLaunchCallback;
 import com.yyong.virutal.api.virtual.PluginManagerWrapper;
 import com.yyong.virutal.api.virtual.VirtualOperator;
 import com.zero.support.common.component.CommonActivity;
 import com.zero.support.common.component.DialogModel;
 import com.zero.support.common.component.RequestViewModel;
-import com.zero.support.work.AppExecutor;
 
 public class StubActivity extends CommonActivity {
+    private static ActivityLaunchCallback callback = new ActivityLaunchCallback() {
+        @Override
+        public void onLaunch(String packageName, int from, int result) {
+            if (result >= 0) {
+                BIHelper.reportLaunchFinish(packageName, from, result);
+            }
+        }
+    };
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_stub);
-        setResult(Activity.RESULT_OK);
         IBinder binder = getIntent().getExtras().getBinder("operator");
         VirtualOperator operator = Binder.asInterface(binder, VirtualOperator.class);
-        AppExecutor.async().execute(() -> {
+        if (isMissingMirror()) {
+            requestOpenMarket(operator);
+        } else {
             String pkg = getMirrorPackage();
             String[] paths = null;
             long flag = AppHolder.getVirtualAttribute(getMirrorPackage());
             if (TextUtils.equals(pkg, "com.tencent.mm")) {
                 flag |= PluginManagerWrapper.CAP_ISOLATE_SYSTEM_SETTINGS;
-                paths = new String[]{"tencent","Tencent"};
+                paths = new String[]{"tencent", "Tencent"};
             }
-            operator.startPlugin(flag, paths, result -> {
-                Log.d("mirror", "start ret: "+result );
-                if (result >= 0) {
-                    BIHelper.reportLaunchFinish(getMirrorPackage(), getLaunchFrom(), result);
-                } else if (result == -100) {
-                    AppExecutor.main().execute(() -> requestOpenMarket(operator));
-                    return;
-                }
-                AppExecutor.main().execute(this::finish);
-                AppExecutor.main().execute(operator::finishSplashActivity);
-            });
+            reply(flag, paths);
+        }
 
-        });
+    }
+
+    public void reply(long flag, String[] paths) {
+        Intent intent = new Intent();
+        Bundle bundle = new Bundle();
+        bundle.putLong("attribute", flag);
+        bundle.putStringArray("paths", paths);
+        bundle.putBinder("binder", Binder.asBinder(callback, ActivityLaunchCallback.class));
+        intent.replaceExtras(bundle);
+        setResult(RESULT_OK, intent);
+        finish();
+    }
+
+
+    @Override
+    protected void finalize() throws Throwable {
+        super.finalize();
     }
 
     private void requestOpenMarket(VirtualOperator operator) {
@@ -62,7 +78,6 @@ public class StubActivity extends CommonActivity {
             }
             event.dismiss();
             finish();
-            operator.finishSplashActivity();
         });
 
     }
@@ -100,4 +115,7 @@ public class StubActivity extends CommonActivity {
         return getIntent().getStringExtra("mirrorName");
     }
 
+    public boolean isMissingMirror() {
+        return getIntent().getBooleanExtra("missingMirror", false);
+    }
 }
