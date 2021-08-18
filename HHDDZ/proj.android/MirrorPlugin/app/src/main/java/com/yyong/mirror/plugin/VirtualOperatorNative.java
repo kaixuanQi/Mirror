@@ -22,6 +22,7 @@ public class VirtualOperatorNative implements VirtualOperator {
     public static VirtualOperatorNative INSTANCE;
     private final Mirror mirror;
     private Activity activity;
+    private int from;
 
 
     public static void initialize(Context context) {
@@ -30,6 +31,7 @@ public class VirtualOperatorNative implements VirtualOperator {
 
     public void attachActivity(Activity activity) {
         this.activity = activity;
+        this.from =  activity.getIntent().getIntExtra("from", 0);
     }
 
     public void detach() {
@@ -51,7 +53,7 @@ public class VirtualOperatorNative implements VirtualOperator {
         if (mirror.getRemoteMirrorPackageInfo() == null) {
             //应用被卸载
             Log.e("mirror", "startPlugin: " + mirror.getMirrorPackageName());
-            callback.onLaunch(-100);
+            callback.onLaunch(mirror.getMirrorPackageName(),from,-100);
             return;
         }
         boolean firstInstall = packageInfo == null;
@@ -85,7 +87,7 @@ public class VirtualOperatorNative implements VirtualOperator {
             Log.e("mirror","wechat is running "+ret+"  "+processInfo.processName+"  "+processInfo.pid+" "+Arrays.toString(processInfo.pkgList)+" "+processInfo.uid);
         }
         if (callback != null) {
-            callback.onLaunch(ret);
+            callback.onLaunch(mirror.getMirrorPackageName(),from,ret);
         }
     }
 

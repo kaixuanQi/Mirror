@@ -120,10 +120,10 @@ public class Mirror {
 
     public PackageInfo getRemoteMirrorPackageInfo() {
         try {
-            mirrorPackageInfo = pm.getPackageInfo(mirrorPackageName, PackageManager.GET_META_DATA);
+            return pm.getPackageInfo(mirrorPackageName, PackageManager.GET_META_DATA);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return mirrorPackageInfo;
+        return null;
     }
 }

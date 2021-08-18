@@ -15,6 +15,7 @@ import android.provider.Settings;
 
 import com.yyong.mirror.plugin.holder.R;
 import com.yyong.virtual.api.binder.Binder;
+import com.yyong.virutal.api.virtual.ActivityLaunchCallback;
 import com.yyong.virutal.api.virtual.VirtualOperator;
 
 
@@ -68,7 +69,8 @@ public class MainActivity extends Activity {
         bundle.putString("mirrorPackage", VirtualOperatorNative.INSTANCE.getMirror().getMirrorPackageName());
         bundle.putLong("attribute", VirtualOperatorNative.INSTANCE.getMirror().attribute);
         bundle.putString("name", VirtualOperatorNative.INSTANCE.getMirror().name);
-        bundle.putString("mirrorName",VirtualOperatorNative.INSTANCE.getMirror().mirrorName);
+        bundle.putString("mirrorName", VirtualOperatorNative.INSTANCE.getMirror().mirrorName);
+        bundle.putBoolean("missingMirror", VirtualOperatorNative.INSTANCE.getMirror().getRemoteMirrorPackageInfo() == null);
         intent.replaceExtras(bundle);
         try {
             startActivityForResult(intent, request_stub);
@@ -186,6 +188,33 @@ public class MainActivity extends Activity {
             }
         } else if (requestCode == request_sdcard) {
             requestSdcard();
+        } else if (requestCode == request_stub) {
+            if (resultCode == Activity.RESULT_OK && data != null&&data.getExtras()!=null) {
+                long attribute = data.getLongExtra("attribute", 0);
+                String[] paths = data.getStringArrayExtra("paths");
+                Bundle bundle = data.getExtras();
+                if (bundle==null){
+                    finish();
+                    return;
+                }
+                ActivityLaunchCallback callback = Binder.asInterface(bundle.getBinder("binder"), ActivityLaunchCallback.class);
+                VirtualOperatorNative.INSTANCE.startPlugin(attribute, paths, new ActivityLaunchCallback() {
+                    @Override
+                    public void onLaunch(String packageName, int from, int result) {
+                        if (callback != null) {
+                            callback.onLaunch(packageName, from, result);
+                        }
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                finish();
+                            }
+                        });
+                    }
+                });
+            } else {
+                finish();
+            }
         }
 
     }
