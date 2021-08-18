@@ -28,6 +28,7 @@ public class MainActivity extends Activity {
     private static final int request_source = 102;
     private static final int request_stub = 100;
     private boolean sdcardDenied;
+    private boolean notFound;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +78,7 @@ public class MainActivity extends Activity {
             startActivityForResult(intent, request_stub);
         } catch (Throwable e) {
             e.printStackTrace();
+            notFound = true;
             obtainInstall().show();
         }
 
@@ -190,11 +192,11 @@ public class MainActivity extends Activity {
         } else if (requestCode == request_sdcard) {
             requestSdcard();
         } else if (requestCode == request_stub) {
-            if (resultCode == Activity.RESULT_OK && data != null&&data.getExtras()!=null) {
+            if (resultCode == Activity.RESULT_OK && data != null && data.getExtras() != null) {
                 final long attribute = data.getLongExtra("attribute", 0);
                 final String[] paths = data.getStringArrayExtra("paths");
                 Bundle bundle = data.getExtras();
-                if (bundle==null){
+                if (bundle == null) {
                     finish();
                     return;
                 }
@@ -218,7 +220,7 @@ public class MainActivity extends Activity {
                         });
                     }
                 });
-            } else {
+            } else if (!notFound) {
                 finish();
             }
         }
