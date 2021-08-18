@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 
@@ -254,7 +255,7 @@ public class MirrorProducerViewModel extends DataViewModel<PackageInfo, Producer
         String obbDir = AppGlobal.getApplication().getObbDir().getAbsolutePath();
         obbDir = obbDir.replace(AppGlobal.getApplication().getPackageName(),info.packageName);
         File file = new File(obbDir,"main."+info.versionCode+"."+info.packageName+".obb");
-        boolean hasObb = file.exists();
+        boolean hasObb = file.exists()|| TextUtils.equals(info.packageName,"com.tencent.tmgp.pubgmhd");
         producer.produce(icon, title + "分身", title, 0, getAbiName(),hasObb);
         return Response.success(producer);
     }
