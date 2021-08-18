@@ -1,16 +1,12 @@
 package com.excean.mirror.version;
 
 import android.app.Activity;
-import android.app.Application;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Bundle;
 import android.provider.Settings;
-import android.util.Log;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import androidx.lifecycle.MediatorLiveData;
 
 import com.excean.middleware.ui.base.LocalDialogModel;
 import com.excean.mirror.R;
@@ -35,12 +31,13 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-public class VersionMonitor implements Application.ActivityLifecycleCallbacks {
+public class VersionMonitor {
     public final static VersionMonitor INSTANCE = new VersionMonitor();
-    private UpgradeOperation operation;
-    private PromiseObservable<DialogModel> dialog = new PromiseObservable<>();
-    private ProgressDialog progressDialog = new ProgressDialog();
-    private Set<Class<?>> ignores = new HashSet<>();
+    private final UpgradeOperation operation;
+    private final PromiseObservable<DialogModel> dialog = new PromiseObservable<>();
+    private final ProgressDialog progressDialog = new ProgressDialog();
+    private final Set<Class<?>> ignores = new HashSet<>();
+    private final MediatorLiveData<DialogModel> uiEvent = new MediatorLiveData<>();
 
     public VersionMonitor() {
         this.operation = UpgradeOperation.getDefault();
@@ -88,6 +85,37 @@ public class VersionMonitor implements Application.ActivityLifecycleCallbacks {
                 }
             }
         });
+
+        final androidx.lifecycle.Observer<DialogModel> source = model -> uiEvent.setValue(model);
+        uiEvent.addSource(ActivityManager.getTopObservable().asLive(), activity -> {
+            if (activity!=null){
+                uiEvent.removeSource(dialog.asLive());
+                uiEvent.addSource(dialog.asLive(), source);
+            }
+
+        });
+        uiEvent.observeForever(model -> {
+            if (model == null) {
+                return;
+            }
+            Activity activity = ActivityManager.getTopActivity();
+            if (activity == null) {
+                return;
+            }
+            if (ignores.contains(activity.getClass())) {
+                return;
+            }
+            if (model.requireViewModel() != null) {
+                if (model.requireViewModel().getActivity() != activity) {
+                    model.dismiss();
+                    model.reset();
+                }
+            }
+            if (activity instanceof CommonActivity) {
+                RequestViewModel viewModel = ((CommonActivity) activity).peekViewModel(RequestViewModel.class);
+                viewModel.requestDialog(model);
+            }
+        });
     }
 
     private void waitingNetworkToContinue() {
@@ -112,42 +140,9 @@ public class VersionMonitor implements Application.ActivityLifecycleCallbacks {
 
 
     public static void inject(Class<?>... activity) {
-        AppGlobal.getApplication().registerActivityLifecycleCallbacks(INSTANCE);
         INSTANCE.ignores.addAll(Arrays.asList(activity));
     }
 
-    private final androidx.lifecycle.Observer<DialogModel> observer = new androidx.lifecycle.Observer<DialogModel>() {
-        @Override
-        public void onChanged(DialogModel dialogModel) {
-            if (dialogModel == null) {
-                return;
-            }
-            RequestViewModel viewModel = ActivityManager.getFirstRequestViewModel();
-            if (viewModel != null) {
-                dialogModel.reset();
-                viewModel.requestDialog(dialogModel);
-            }
-        }
-    };
-
-    public void cancel(CommonActivity activity) {
-        dialog.asLive().removeObserver(observer);
-    }
-
-    public void monitor(CommonActivity activity) {
-        dialog.asLive().observe(activity, new androidx.lifecycle.Observer<DialogModel>() {
-            @Override
-            public void onChanged(DialogModel dialogModel) {
-                if (dialogModel == null) {
-                    return;
-                }
-                RequestViewModel viewModel = ActivityManager.getFirstRequestViewModel();
-                if (viewModel != null) {
-                    viewModel.requestDialog(dialogModel);
-                }
-            }
-        });
-    }
 
     private DialogModel createUpdateDialog(VersionInfo versionInfo) {
         DialogModel model = new LocalDialogModel.Builder()
@@ -269,48 +264,5 @@ public class VersionMonitor implements Application.ActivityLifecycleCallbacks {
 
             }
         });
-    }
-
-    @Override
-    public void onActivityCreated(@NonNull Activity activity, @Nullable Bundle savedInstanceState) {
-        if (ignores.contains(activity.getClass())) {
-            return;
-        }
-        if (activity instanceof CommonActivity) {
-            monitor((CommonActivity) activity);
-        }
-    }
-
-    @Override
-    public void onActivityStarted(@NonNull Activity activity) {
-
-    }
-
-    @Override
-    public void onActivityResumed(@NonNull Activity activity) {
-
-
-    }
-
-    @Override
-    public void onActivityPaused(@NonNull Activity activity) {
-//        if (activity instanceof CommonActivity) {
-//            cancel((CommonActivity) activity);
-//        }
-    }
-
-    @Override
-    public void onActivityStopped(@NonNull Activity activity) {
-
-    }
-
-    @Override
-    public void onActivitySaveInstanceState(@NonNull Activity activity, @NonNull Bundle outState) {
-
-    }
-
-    @Override
-    public void onActivityDestroyed(@NonNull Activity activity) {
-
     }
 }

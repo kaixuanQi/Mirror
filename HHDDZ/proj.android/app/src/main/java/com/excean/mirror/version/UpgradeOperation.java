@@ -218,8 +218,12 @@ public class UpgradeOperation {
             romDetail = getLocalVersionInfo(app, app.getExternalCacheDir().getParentFile());
         }
         if (romDetail == null) {
-            checkUpdate();
-            Api.getService(ApiService.class).requestUpdate().observe(observer);
+            Api.getService(ApiService.class).requestUpdate().asLive().observeForever(new androidx.lifecycle.Observer<Response<VersionInfo>>() {
+                @Override
+                public void onChanged(Response<VersionInfo> response) {
+                    observer.onChanged(response);
+                }
+            });
         } else {
             observer.onChanged(Response.success(romDetail));
         }

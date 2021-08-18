@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.zero.support.common.component.CommonActivity;
 import com.zero.support.common.component.RequestViewModel;
 import com.zero.support.common.window.BaseWindow;
+import com.zero.support.work.Observable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,8 +24,8 @@ public class ActivityManager {
     private static final List<Activity> activities = new ArrayList<>();
     private static final List<BaseWindow> windows = new ArrayList<>();
     private static final Map<IBinder, WindowInfo> windowInfoList = new HashMap<>();
-    private static Activity mTopActivity;
 
+    private final static Observable<Activity> mTopActivity = new Observable<>();
     static final Application.ActivityLifecycleCallbacks callbacks = new Application.ActivityLifecycleCallbacks() {
         @Override
         public void onActivityCreated(@NonNull Activity activity, @Nullable Bundle savedInstanceState) {
@@ -35,7 +36,7 @@ public class ActivityManager {
 
         @Override
         public void onActivityStarted(@NonNull Activity activity) {
-            mTopActivity = activity;
+            mTopActivity.setValue(activity);
         }
 
         @Override
@@ -50,8 +51,8 @@ public class ActivityManager {
 
         @Override
         public void onActivityStopped(@NonNull Activity activity) {
-            if (mTopActivity == activity) {
-                mTopActivity = null;
+            if (mTopActivity.getValue() == activity) {
+                mTopActivity.setValue(null);
             }
         }
 
@@ -158,9 +159,13 @@ public class ActivityManager {
 
     @MainThread
     public static Activity getTopActivity() {
-        return mTopActivity;
+        return mTopActivity.getValue();
     }
 
+    @MainThread
+    public static Observable<Activity> getTopObservable() {
+        return mTopActivity;
+    }
 
     public static WindowInfo getWindowInfo(IBinder token) {
         if (token == null) {
