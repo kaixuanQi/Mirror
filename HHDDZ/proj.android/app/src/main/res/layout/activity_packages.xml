@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.excean.mirror.apps.AppPackageViewModel" />
+            type="com.yyong.mirror.apps.AppPackageViewModel" />
     </data>
 
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"

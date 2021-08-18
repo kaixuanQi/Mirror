@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.excean.mirror">
+    package="com.yyong.mirror">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -14,7 +14,7 @@
 
 
     <application
-        android:name=".App"
+        android:name="com.yyong.mirror.App"
         android:allowBackup="true"
         android:icon="@drawable/icon"
         android:label="@string/app_name"
@@ -22,43 +22,43 @@
         android:theme="@style/Theme.Mirror.NoActionBar"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".SplashActivity"
+            android:name="com.yyong.mirror.SplashActivity"
             android:theme="@style/Theme.Mirror.NoActionBar.FullScreen">
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" />
-        <activity android:name=".apps.AppPackageActivity" />
-        <activity android:name=".personal.CenterActivity" />
-        <activity android:name=".personal.AboutActivity" />
-        <activity android:name=".personal.FeedbackActivity" />
-        <activity android:name=".personal.QuestionActivity" />
-        <activity android:name=".MirrorActivity" />
-        <activity android:name=".producer.MirrorProducerActivity" />
+        <activity android:name="com.yyong.mirror.MainActivity" />
+        <activity android:name="com.yyong.mirror.apps.AppPackageActivity" />
+        <activity android:name="com.yyong.mirror.personal.CenterActivity" />
+        <activity android:name="com.yyong.mirror.personal.AboutActivity" />
+        <activity android:name="com.yyong.mirror.personal.FeedbackActivity" />
+        <activity android:name="com.yyong.mirror.personal.QuestionActivity" />
+        <activity android:name="com.yyong.mirror.MirrorActivity" />
+        <activity android:name="com.yyong.mirror.producer.MirrorProducerActivity" />
         <activity
-            android:name=".StubActivity"
+            android:name="com.yyong.mirror.StubActivity"
             android:excludeFromRecents="true"
             android:exported="true"
             android:theme="@style/Theme.Mirror.Translucent">
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
-                <action android:name="com.excean.mirror.action.mirror" />
+                <action android:name="com.yyong.mirror.action.mirror" />
             </intent-filter>
         </activity>
 
         <provider
-            android:name=".plugin.InstallProvider"
+            android:name="com.yyong.mirror.plugin.InstallProvider"
             android:authorities="${applicationId}:file.provider"
             android:exported="false"
             android:grantUriPermissions="true" />
         <provider
-            android:name=".plugin.ServerProvider"
+            android:name="com.yyong.mirror.plugin.ServerProvider"
             android:authorities="${applicationId}:mirror.service"
             android:exported="true" />
 
-        <service android:name=".version.DownloadService" />
+        <service android:name="com.yyong.mirror.version.DownloadService" />
     </application>
 
 </manifest>

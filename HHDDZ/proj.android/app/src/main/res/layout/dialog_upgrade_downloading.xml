@@ -9,7 +9,7 @@
 
         <variable
             name="data"
-            type="com.excean.mirror.version.ProgressDialog" />
+            type="com.yyong.mirror.version.ProgressDialog" />
 
     </data>
 

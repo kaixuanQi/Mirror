@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.excean.mirror.plugin.holder"
+    package="com.yyong.mirror.plugin.holder"
 
     >
 
     <permission android:name="android.permission.FOREGROUND_SERVICE" />
     <application
-        android:name="com.excean.mirror.plugin.App"
+        android:name="com.yyong.mirror.plugin.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -38,7 +38,7 @@
             android:value="${MIRROR_OBB}" />
 
         <activity
-            android:name="com.excean.mirror.plugin.MainActivity"
+            android:name="com.yyong.mirror.plugin.MainActivity"
             android:excludeFromRecents="true"
             android:theme="@android:style/Theme.Light.NoTitleBar">
             <intent-filter>
@@ -48,7 +48,7 @@
         </activity>
 
         <provider
-            android:name="com.excean.mirror.plugin.UIWrapperProvider"
+            android:name="com.yyong.mirror.plugin.UIWrapperProvider"
             android:authorities="${applicationId}:UIWrapperProvider"
             android:exported="true"></provider>
     </application>

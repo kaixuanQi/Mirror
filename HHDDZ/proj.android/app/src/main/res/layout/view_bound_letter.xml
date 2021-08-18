@@ -5,7 +5,7 @@
 
         <variable
             name="data"
-            type="com.excean.mirror.apps.vo.LetterCell" />
+            type="com.yyong.mirror.apps.vo.LetterCell" />
     </data>
 
     <TextView
