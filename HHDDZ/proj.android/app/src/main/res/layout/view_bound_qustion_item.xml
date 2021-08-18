@@ -5,15 +5,15 @@
 
         <variable
             name="data"
-            type="com.excean.mirror.personal.vo.Question" />
+            type="com.yyong.mirror.personal.vo.Question" />
     </data>
 
-    <com.excean.mirror.widget.CollapseCard xmlns:android="http://schemas.android.com/apk/res/android"
+    <com.yyong.mirror.widget.CollapseCard xmlns:android="http://schemas.android.com/apk/res/android"
         collapseCardContent="@{data.content}"
         collapseCardExpanded="@{data.collapse}"
         collapseCardTitle="@{data.title}"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-    </com.excean.mirror.widget.CollapseCard>
+    </com.yyong.mirror.widget.CollapseCard>
 </layout>

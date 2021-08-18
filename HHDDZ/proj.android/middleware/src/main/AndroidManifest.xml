@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.excean.vphone.middleware">
+    package="com.yyong.vphone.middleware">
 
     <application>
-        <activity android:name="com.excean.middleware.ui.base.WebViewActivity" />
+        <activity android:name="com.yyong.middleware.ui.base.WebViewActivity" />
 
         <meta-data
             android:name="MainChId"

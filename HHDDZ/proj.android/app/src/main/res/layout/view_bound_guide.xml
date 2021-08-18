@@ -30,7 +30,7 @@
             android:layout_marginBottom="150dp"
             app:srcCompat="@drawable/ic_guide_arrow" />
 
-        <com.excean.mirror.widget.RippleFab
+        <com.yyong.mirror.widget.RippleFab
             android:id="@+id/fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -9,7 +9,7 @@
 
         <variable
             name="data"
-            type="com.excean.middleware.ui.base.SimpleDialogModel" />
+            type="com.yyong.middleware.ui.base.SimpleDialogModel" />
 
     </data>
 

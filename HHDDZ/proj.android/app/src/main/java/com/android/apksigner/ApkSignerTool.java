@@ -24,7 +24,7 @@ import com.android.apksig.apk.ApkFormatException;
 import com.android.apksig.apk.MinSdkVersionException;
 import com.android.apksig.util.DataSource;
 import com.android.apksig.util.DataSources;
-import com.excean.virutal.api.virtual.FileUtils;
+import com.yyong.virutal.api.virtual.FileUtils;
 
 import java.io.BufferedReader;
 import java.io.File;

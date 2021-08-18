@@ -6,7 +6,7 @@
         <import type="android.view.View"/>
         <variable
             name="viewModel"
-            type="com.excean.mirror.producer.MirrorProducerViewModel" />
+            type="com.yyong.mirror.producer.MirrorProducerViewModel" />
     </data>
 
     <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
