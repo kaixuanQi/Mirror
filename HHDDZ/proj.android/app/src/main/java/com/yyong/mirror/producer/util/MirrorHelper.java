@@ -29,7 +29,7 @@ public class MirrorHelper {
     /**
      * v2签名使用了 java 8的代码，不要打开
      */
-    static String[] CMD = new String[]{"sign", "--ks=", "--ks-pass=pass:lupp845a5dmfi50", "--ks-key-alias=lp0d0qge4", "--key-pass=pass:lupp845a5dmfi50", "--in=", "--out=", "--ks-type=bks", "--v2-signing-enabled=true", "--v3-signing-enabled=false"};
+    static String[] CMD = new String[]{"sign", "--ks=", "--ks-pass=pass:lupp845a5dmfi50", "--ks-key-alias=lp0d0qge4", "--key-pass=pass:lupp845a5dmfi50", "--in=", "--out=", "--ks-type=bks", "--v2-signing-enabled=false", "--v3-signing-enabled=false"};
 
     public static byte[] fixManifest(InputStream stream, String packageName, boolean hasObb, int userId) throws IOException {
         XMLDecoder decoder = new XMLDecoder(ByteBuffer.wrap(DataUtil.toBytes(stream)).order(ByteOrder.LITTLE_ENDIAN));
