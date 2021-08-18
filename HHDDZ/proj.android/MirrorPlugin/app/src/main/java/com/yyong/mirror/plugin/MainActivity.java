@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Process;
@@ -190,24 +191,29 @@ public class MainActivity extends Activity {
             requestSdcard();
         } else if (requestCode == request_stub) {
             if (resultCode == Activity.RESULT_OK && data != null&&data.getExtras()!=null) {
-                long attribute = data.getLongExtra("attribute", 0);
-                String[] paths = data.getStringArrayExtra("paths");
+                final long attribute = data.getLongExtra("attribute", 0);
+                final String[] paths = data.getStringArrayExtra("paths");
                 Bundle bundle = data.getExtras();
                 if (bundle==null){
                     finish();
                     return;
                 }
-                ActivityLaunchCallback callback = Binder.asInterface(bundle.getBinder("binder"), ActivityLaunchCallback.class);
-                VirtualOperatorNative.INSTANCE.startPlugin(attribute, paths, new ActivityLaunchCallback() {
+                AsyncTask.THREAD_POOL_EXECUTOR.execute(new Runnable() {
                     @Override
-                    public void onLaunch(String packageName, int from, int result) {
-                        if (callback != null) {
-                            callback.onLaunch(packageName, from, result);
-                        }
-                        runOnUiThread(new Runnable() {
+                    public void run() {
+                        ActivityLaunchCallback callback = Binder.asInterface(bundle.getBinder("binder"), ActivityLaunchCallback.class);
+                        VirtualOperatorNative.INSTANCE.startPlugin(attribute, paths, new ActivityLaunchCallback() {
                             @Override
-                            public void run() {
-                                finish();
+                            public void onLaunch(String packageName, int from, int result) {
+                                if (callback != null) {
+                                    callback.onLaunch(packageName, from, result);
+                                }
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        finish();
+                                    }
+                                });
                             }
                         });
                     }
