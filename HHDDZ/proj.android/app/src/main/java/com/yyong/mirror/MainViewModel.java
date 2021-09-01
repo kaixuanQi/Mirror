@@ -77,9 +77,9 @@ public class MainViewModel extends DataViewModel<String, List<MirrorPackage>> {
                                 @Override
                                 public String intercept(String url) {
                                     if (TextUtils.equals("redirect://protocol", url)) {
-                                        return AppHolder.PROTOCOL;
+                                        return AppHolder.getProtocol();
                                     } else if (TextUtils.equals("redirect://privacy", url)) {
-                                        return AppHolder.PRIVACY;
+                                        return AppHolder.getPrivacy();
                                     }
                                     return url;
                                 }

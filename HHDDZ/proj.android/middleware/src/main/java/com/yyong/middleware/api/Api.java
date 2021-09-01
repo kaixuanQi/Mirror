@@ -18,7 +18,7 @@ import retrofit2.Retrofit;
 public class Api {
     // 超时时间
     private static final long DEFAULT_TIMEOUT = 15L;
-    private static final String BASE_API_URL = "http://10.0.0.117:8027/splitmarker/";
+    private static final String BASE_API_URL = "https://bus.lightlivetv.com/splitmarker/";
     static WeakHashMap<Class<?>, Object> weakHashMap = new WeakHashMap<>();
 
     private static Retrofit retrofit;

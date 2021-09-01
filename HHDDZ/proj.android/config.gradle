@@ -4,18 +4,19 @@ ext {
     compileVersion = 29
     minSdkVersion = 19
     targetSdkVersion = 29
-    pkg = "com.yyong.fshen"
+    pkg = "com.lightlivetv.llive"
     mainChId = "32022"
     subChId = "1"
-    versionCode = 1
-    versionName = "1.0.0"
-    sharedUserId = "com.yyong.fshen"
+    versionCode = 10
+    versionName = "1.1.0"
+    sharedUserId = "com.lightlivetv.llive"
     mirrorPackage = 'mirror.package.holder'
     mirrorUser = 'mirror.user.holder'
     mirrorAttribute= 'mirror.attribute.holder'
     mirrorService = 'mirror.service.holder'
     mirrorLabel = 'mirror.label.holder'
     mirrorObb = 'mirror.obb.holder'
+    mirrorHost = 'mirror.host.holder'
     macro = [
             //#LogUtil输出,缺省输出log
             BUILD_LOG_SWITCH: false,

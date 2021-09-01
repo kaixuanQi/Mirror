@@ -26,6 +26,7 @@ public class MirrorHelper {
     public static final String SERVICE_HOLDER = "mirror.service.holder";
     public static final String LABEL_HOLDER = "mirror.label.holder";
     public static final String OBB_HOLDER = "mirror.obb.holder";
+    public static final String HOST_HOLDER = "mirror.host.holder";
     /**
      * v2签名使用了 java 8的代码，不要打开
      */
@@ -54,12 +55,14 @@ public class MirrorHelper {
         return byteBuffer.array();
     }
 
-    public static byte[] fixResource(InputStream inputStream, String title,String name) throws IOException {
+    public static byte[] fixResource(InputStream inputStream, String title, String name) throws IOException {
         ARSCDecoder decoder = new ARSCDecoder(ByteBuffer.wrap(DataUtil.toBytes(inputStream)).order(ByteOrder.LITTLE_ENDIAN));
         decoder.readStringBlock();
         Map<String, String> map = new HashMap<>();
         map.put(LABEL_HOLDER, name);
         map.put(NAME_HOLDER, title);
+        String host = String.valueOf(AppGlobal.getApplication().getApplicationInfo().loadLabel(AppGlobal.getApplication().getPackageManager()));
+        map.put(HOST_HOLDER, host);
         ByteBuffer byteBuffer = decoder.write(map);
         byteBuffer.position(0);
         return byteBuffer.array();

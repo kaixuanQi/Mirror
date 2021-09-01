@@ -231,7 +231,7 @@ public class MainActivity extends Activity {
         if (dialog != null) {
             return dialog;
         }
-        String message = "您尚未安装应用分身版，无法启动" + VirtualOperatorNative.INSTANCE.getMirror().name + "，请先安装后再尝试启动。";
+        String message = "您尚未安装"+getResources().getString(R.string.mirror_host)+"，无法启动" + VirtualOperatorNative.INSTANCE.getMirror().name + "，请先安装后再尝试启动。";
         int theme;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
             theme = android.R.style.Theme_Material_Light_Dialog_Alert;

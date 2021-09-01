@@ -1,4 +1,8 @@
+<!DOCTYPE resources [
+    <!ENTITY appname "即刻直播">
+    ]>
 <resources>
+    <string name="app_name">&appname;</string>
     <string name="dialog_privacy_title">个人信息保护提示</string>
     <string name="dialog_privacy_content">
          <![CDATA[
@@ -20,7 +24,6 @@
     <string name="dialog_install_content">新版本已下载完成，是否立即安装？</string>
     <string name="dialog_install_negative">暂不</string>
     <string name="dialog_install_positive">立即安装</string>
-    <string name="app_name">应用分身版</string>
     <string name="question_type">分类标签</string>
     <string name="question_description">我要反馈</string>
     <string name="feedback_contact_way">联系方式</string>
@@ -80,7 +83,7 @@
     <string name="mirror_producer_notice">注意事项:部分手机需要授权“允许安装应用”的权限，若不授权将导致制作失败</string>
 
     <string name="dialog_download_package">安装包: %1$s</string>
-    <string name="dialog_download_hint">应用分身版%1$s 正在下载中，请勿退出</string>
+    <string name="dialog_download_hint">&appname;%1$s 正在下载中，请勿退出</string>
     <string name="dialog_missing_mirror_content">您尚未在本机安装%1$s应用，无法启动分身，请安装后再尝试启动</string>
 
     <string-array name="feedback_question_type">
