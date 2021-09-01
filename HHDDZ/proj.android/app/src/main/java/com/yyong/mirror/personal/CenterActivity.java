@@ -69,8 +69,8 @@ public class CenterActivity extends TitleActivity {
             invokeCheck = true;
             UpgradeOperation.getDefault().checkUpdate();
         }));
-        list.add(new ManagerItem(R.string.title_privacy, R.drawable.ic_privacy, (v -> WebViewActivity.open(CenterActivity.this, AppHolder.PRIVACY))));
-        list.add(new ManagerItem(R.string.title_protocol, R.drawable.ic_procotol, (v -> WebViewActivity.open(CenterActivity.this, AppHolder.PROTOCOL))));
+        list.add(new ManagerItem(R.string.title_privacy, R.drawable.ic_privacy, (v -> WebViewActivity.open(CenterActivity.this, AppHolder.getPrivacy()))));
+        list.add(new ManagerItem(R.string.title_protocol, R.drawable.ic_procotol, (v -> WebViewActivity.open(CenterActivity.this, AppHolder.getProtocol()))));
         list.add(new ManagerItem(R.string.title_about_us, R.drawable.ic_about_us, (v) -> startActivity(new Intent(CenterActivity.this, AboutActivity.class))));
         return list;
     }

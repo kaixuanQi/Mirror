@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">mirror.name.holder</string>
     <string name="mirror_name">mirror.label.holder</string>
+    <string name="mirror_host">mirror.host.holder</string>
 </resources>

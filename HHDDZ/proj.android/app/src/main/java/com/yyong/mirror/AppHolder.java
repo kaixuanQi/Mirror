@@ -1,5 +1,6 @@
 package com.yyong.mirror;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.yyong.middleware.api.Api;
@@ -18,11 +19,22 @@ public class AppHolder {
     public static final SharedPreferenceObservable<Boolean> userGuideProducer = AppGlobal.sharedPreferences("user_guide", "producer", false);
     public static final SharedPreferenceObservable<Boolean> userGuideProducerClick = AppGlobal.sharedPreferences("user_guide", "producer_click", false);
 
-    public static final String PRIVACY = "https://iflydocs.com/h/s/doc/td8rNZCKqRinmJx9";
-    public static final String PROTOCOL = "https://iflydocs.com/h/s/doc/td8rNZCKqRinmJx9";
+    private static final String PRIVACY = "https://lightlivetv.com/privacy/?appname=";
+    private static final String PROTOCOL = "https://lightlivetv.com/agreement/?appname=";
+
     public static long getVirtualAttribute(String packageName) {
         SharedPreferences preferences = AppGlobal.sharedPreferences("virtual_attr");
         return preferences.getLong(packageName, 0L);
+    }
+
+    public static String getPrivacy() {
+        Context context = AppGlobal.getApplication();
+        return PRIVACY+ context.getApplicationInfo().loadLabel(context.getPackageManager());
+    }
+
+    public static String getProtocol() {
+        Context context = AppGlobal.getApplication();
+        return PROTOCOL+ context.getApplicationInfo().loadLabel(context.getPackageManager());
     }
 
     public static void updateVirtualAttribute(List<VirtualAttribute> attributes) {
