@@ -86,7 +86,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="end"
-                    android:text="support@yixin.cn"
+                    android:text="support@lightlivetv.com"
                     android:textColor="#ff999999"
                     android:textIsSelectable="true"
                     android:textSize="14sp" />
