@@ -21,7 +21,7 @@ public class BIHelper {
 
 
     public static void initialize(Context context) {
-        final InitConfig config = new InitConfig("10000008", ChannelMeta.getDefault().mainChannelId);
+        final InitConfig config = new InitConfig("10000008", ChannelMeta.getDefault().mainChannelId+"_"+ChannelMeta.getDefault().subChannelId);
         config.setUriConfig(UriConfig.createByDomain("https://rangers.excelliance.cn", null));
         if (BuildConfig.DEBUG) {
             config.setLogger((msg, t) -> Log.d(TAG, msg, t));
