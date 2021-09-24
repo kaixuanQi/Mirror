@@ -5,6 +5,7 @@ import android.util.Log;
 import com.yyong.middleware.api.ext.GsonConverterFactory;
 import com.yyong.middleware.api.ext.ObservableCallAdapterFactory;
 import com.yyong.middleware.api.internal.DeviceUserHeaderInterceptor;
+import com.yyong.vphone.middleware.BuildConfig;
 
 import java.util.WeakHashMap;
 import java.util.concurrent.TimeUnit;
@@ -18,13 +19,18 @@ import retrofit2.Retrofit;
 public class Api {
     // 超时时间
     private static final long DEFAULT_TIMEOUT = 15L;
-    private static final String BASE_API_URL = "https://bus.lightlivetv.com/splitmarker/";
+    private static final String BASE_API_URL;
     static WeakHashMap<Class<?>, Object> weakHashMap = new WeakHashMap<>();
 
     private static Retrofit retrofit;
     private static String accountId;
 
     static {
+        if (BuildConfig.BUILD_DEBUG_SERVER){
+            BASE_API_URL = "http://10.0.0.117:8027/splitmarker/";
+        }else {
+            BASE_API_URL = "https://bus.lightlivetv.com/splitmarker/";;
+        }
         Interceptor logger = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
             @Override
             public void log(String message) {

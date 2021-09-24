@@ -20,5 +20,7 @@ ext {
     macro = [
             //#LogUtil输出,缺省输出log
             BUILD_LOG_SWITCH: false,
+            //测试服务器
+            BUILD_DEBUG_SERVER:false,
     ]
 }
