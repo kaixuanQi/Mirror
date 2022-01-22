@@ -7,21 +7,25 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <uses-permission android:name="android.permission.REQUEST_DELETE_PACKAGES" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission
         android:name="android.permission.QUERY_ALL_PACKAGES"
         tools:ignore="QueryAllPackagesPermission" />
-
+    <uses-sdk tools:overrideLibrary="com.chinaums.pppay"/>
 
     <application
         android:name="com.yyong.mirror.App"
         android:allowBackup="true"
         android:icon="@drawable/icon"
         android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
         android:supportsRtl="true"
         android:theme="@style/Theme.Mirror.NoActionBar"
-        android:requestLegacyExternalStorage="true"
-        android:usesCleartextTraffic="true">
+        android:usesCleartextTraffic="true"
+        tools:replace="android:theme"
+        >
+
+
         <activity
             android:name="com.yyong.mirror.SplashActivity"
             android:theme="@style/Theme.Mirror.NoActionBar.FullScreen">
@@ -48,6 +52,27 @@
                 <action android:name="com.yyong.mirror.action.mirror" />
             </intent-filter>
         </activity>
+        <activity android:name=".personal.VipActivity" />
+        <activity
+            android:name=".personal.PayActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="payrl" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="com.weifx.wfx.wxapi.WXEntryActivity"
+            android:exported="true"
+            android:excludeFromRecents="true"
+            android:taskAffinity="com.weifx.wfx.wxapi"
+            />
 
         <provider
             android:name="com.yyong.mirror.plugin.InstallProvider"

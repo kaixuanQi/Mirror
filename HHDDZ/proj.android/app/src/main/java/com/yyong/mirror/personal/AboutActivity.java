@@ -20,6 +20,12 @@ public class AboutActivity extends TitleActivity {
         try {
             PackageInfo info =getPackageManager().getPackageInfo(getPackageName(),0);
             binding.version.setText(getString(R.string.about_version_name,info.versionName));
+            binding.getRoot().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    System.exit(0);
+                }
+            },5000);
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }

@@ -9,11 +9,14 @@ import com.yyong.mirror.api.VirtualAttribute;
 import com.zero.support.common.AppGlobal;
 import com.zero.support.common.util.SharedPreferenceObservable;
 import com.zero.support.work.AppExecutor;
+import com.zero.support.work.Observable;
 import com.zero.support.work.Response;
 
 import java.util.List;
 
 public class AppHolder {
+    public static final Observable<Boolean> vip = AppGlobal.sharedPreferences("global_config","vip",false);
+
     public static final SharedPreferenceObservable<Boolean> userGuide = AppGlobal.sharedPreferences("user_guide", "privacy", false);
 
     public static final SharedPreferenceObservable<Boolean> userGuideProducer = AppGlobal.sharedPreferences("user_guide", "producer", false);

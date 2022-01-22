@@ -1,14 +1,15 @@
 package com.yyong.mirror;
 
+import android.app.Application;
 import android.content.Context;
 
 
-import androidx.multidex.MultiDexApplication;
+
 
 import com.yyong.mirror.version.VersionMonitor;
 import com.zero.support.common.AppGlobal;
 
-public class App extends MultiDexApplication {
+public class App extends Application {
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);

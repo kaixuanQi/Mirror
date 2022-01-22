@@ -1,7 +1,9 @@
 package com.yyong.mirror;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.Nullable;
@@ -94,5 +96,10 @@ public class MainActivity extends BaseActivity {
     public void onBackPressed() {
         clickBack = true;
         moveTaskToBack(false);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }
